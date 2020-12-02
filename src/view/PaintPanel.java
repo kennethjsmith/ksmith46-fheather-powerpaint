@@ -1,10 +1,12 @@
 package view;
 
 import java.awt.BasicStroke;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -12,6 +14,8 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.Path2D;
 
 import javax.swing.JPanel;
+
+import controller.tools.LineTool;
 
 public class PaintPanel extends JPanel{
     /**
@@ -42,28 +46,29 @@ public class PaintPanel extends JPanel{
     /**  A generated serial version UID for object Serialization. */
     private static final long serialVersionUID = 8452917670991316606L; 
 
-    // Instance Fields
+    // Should this be private?
+    public final LineTool myLineTool = new LineTool(); 
+    
+    private final PowerPaintToolBar myToolBar = new PowerPaintToolBar();
     
     /**
-     * The path being created.
+     * Keeps track of how many times the user has clicked. 
+     * Used in MouseListener.
      */
-    private final Path2D myPath;
+    private int clickCounter;
     
-    // OR you could use Path2D.Double instead of GeneralPath
-
     // Constructor
 
     /**
      * Constructs a new general path panel.
      */
     public PaintPanel() {
-        super();
-        myPath = new GeneralPath();
-        myPath.setWindingRule(GeneralPath.WIND_EVEN_ODD);
-        
+        super();       
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setBackground(BACKGROUND_COLOR);
         addMouseListener(new MyMouseListener());
+        clickCounter = 0;
+        add(myToolBar, BorderLayout.PAGE_END);
     }
 
     /**
@@ -81,7 +86,7 @@ public class PaintPanel extends JPanel{
         
         g2d.setPaint(FOREGROUND_COLOR);
         g2d.setStroke(new BasicStroke(LINE_WIDTH));
-        g2d.draw(myPath);
+        g2d.draw(myLineTool.getShape());
 
     }
     
@@ -98,13 +103,15 @@ public class PaintPanel extends JPanel{
          */
         @Override
         public void mouseClicked(final MouseEvent theEvent) {
+            clickCounter++;            
+            Point newPoint = new Point (theEvent.getPoint());
             
-            if (myPath.getCurrentPoint() == null) {
-                myPath.moveTo(theEvent.getX(), theEvent.getY());
-            } else if (theEvent.getClickCount() == 2) {
-                myPath.closePath();
-            } else {
-                myPath.lineTo(theEvent.getX(), theEvent.getY());
+            // If the user has clicked an odd number of times, set the startPoint for the line
+            if(clickCounter % 2 == 1) {
+                myLineTool.setStartPoint(newPoint);
+            // Otherwise the user has clicked an even number of times, finish the line
+            }else {
+                myLineTool.setNextPoint(newPoint);
             }
             repaint();
         }
