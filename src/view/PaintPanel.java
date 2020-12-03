@@ -6,16 +6,21 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.RenderingHints;
-import java.awt.event.MouseAdapter;
+import java.awt.Shape;
 import java.awt.event.MouseEvent;
-import java.awt.geom.GeneralPath;
 import java.awt.geom.Path2D;
+import java.util.Iterator;
+import java.util.LinkedList;
+
+import model.PaintedShape;
 
 import javax.swing.JPanel;
+import javax.swing.event.MouseInputAdapter;
 
+//import Eraser;
 import controller.tools.LineTool;
+import controller.tools.PaintTool;
 
 public class PaintPanel extends JPanel{
     /**
@@ -46,10 +51,23 @@ public class PaintPanel extends JPanel{
     /**  A generated serial version UID for object Serialization. */
     private static final long serialVersionUID = 8452917670991316606L; 
 
-    // Should this be private?
-    public final LineTool myLineTool = new LineTool(); 
+    private final LineTool myLineTool = new LineTool(); 
     
     private final PowerPaintToolBar myToolBar = new PowerPaintToolBar();
+    
+    public int myCurrentWidth;
+
+    public LineTool myCurrentTool;
+
+    public Color myCurrentColor;
+
+    private LinkedList<PaintedShape> myShapeList;
+
+    private boolean myFill;
+
+    private Color myDrawColor;
+
+    private Color myFillColor;
     
     /**
      * Keeps track of how many times the user has clicked. 
@@ -66,54 +84,205 @@ public class PaintPanel extends JPanel{
         super();       
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setBackground(BACKGROUND_COLOR);
-        addMouseListener(new MyMouseListener());
+        addMouseListener(new MyMouseHandler());
         clickCounter = 0;
-        add(myToolBar, BorderLayout.PAGE_END);
+        add(myToolBar, BorderLayout.SOUTH);
+        myCurrentWidth = 1;
+        myCurrentTool = new LineTool();
+        myCurrentColor = Color.RED;
+        myShapeList = new LinkedList<>();
+        myFill = true;
+        myDrawColor = Color.RED;
+        myFillColor = Color.RED;
     }
 
-    /**
-     * Paints the current path.
-     * 
-     * @param theGraphics The graphics context to use for painting.
-     */
+
     @Override
     public void paintComponent(final Graphics theGraphics) {
         super.paintComponent(theGraphics);
         final Graphics2D g2d = (Graphics2D) theGraphics;
-
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                              RenderingHints.VALUE_ANTIALIAS_ON);
+       
+        // Iterate through the deque in reverse order
+        // to draw the previous shapes in the correct order:
+        final Iterator<PaintedShape> it = myShapeList.descendingIterator();
+        while (it.hasNext()) {
+            final PaintedShape current = it.next();
+            g2d.setStroke(current.getStroke());
+            g2d.setPaint(current.getDrawColor());
+            final Shape s = current.getShape();
+            
+            if ((!(s instanceof Path2D)) && current.isFilled()) {
+                g2d.fill(current.getShape());
+            } else { 
+                g2d.draw(s);
+            }
+        }
+    
+        // draw the current shape
+        g2d.setStroke(new BasicStroke(myCurrentWidth,
+                        BasicStroke.CAP_SQUARE,
+                        BasicStroke.JOIN_MITER,
+                        1,
+                        null,
+                        0));
+        g2d.setPaint(myCurrentColor);
+        final Shape s = myCurrentTool.getShape();
         
-        g2d.setPaint(FOREGROUND_COLOR);
-        g2d.setStroke(new BasicStroke(LINE_WIDTH));
-        g2d.draw(myLineTool.getShape());
-
+        if ((!(s instanceof Path2D)) && myFill ) {
+            g2d.fill(myCurrentTool.getShape());
+        } else {
+            g2d.draw(s);
+        }
     }
     
- // Inner Class
-
+    
     /**
-     * Listens for mouse clicks, to draw on our panel.
+     * Clears the painting surface.
      */
-    private class MyMouseListener extends MouseAdapter {
-        /**
-         * Handles a click event.
-         * 
-         * @param theEvent The event.
-         */
+    public void clear() {
+        myShapeList.clear();
+        firePropertyChange("clear", null, false);
+        repaint();
+    }
+    
+    /**
+     *  Turns the grid on or off depending on the parameter passed in.
+     *  
+     *  @param theGrid true to turn the grid on; false to turn the grid off
+     */
+    public void setFill(final boolean theGrid) {
+        myFill = theGrid;
+        repaint();
+    }
+    
+    /**
+     * Sets the current paint tool.
+     * 
+     * @param theTool the current tool to set
+     */
+    public void setCurrentTool(final PaintTool theTool) {
+        myCurrentTool = new LineTool();
+        /**if (theTool == null) {
+            myCurrentTool = myToolActions.get(0).getMyTool();
+        } else {
+            myCurrentTool = theTool;
+        }*/
+    }
+    
+    /**
+     * Returns the current paint tool.
+     * 
+     * @return the current paint tool
+     */
+    public PaintTool getCurrentTool() {
+        return myCurrentTool;
+    }
+    
+    /**
+     * Set the current draw color.
+     * 
+     * @param theColor the paint color to use
+     */
+    public void setCurrentColor(final Color theColor) {
+        myDrawColor = theColor;
+    }
+    
+    
+    /**
+     * Sets the current fill color.
+     * 
+     * @param theColor the paint color to use
+     */
+    public void setCurrentColor2(final Color theColor) {
+        myFillColor = theColor;
+    }
+    
+    /**
+     * Returns the current draw color.
+     * 
+     * @return the current draw color
+     */
+    public Color getCurrentDrawColor() {
+        return myDrawColor;
+    }
+    
+    
+    /**
+     * Returns the current fill color.
+     * 
+     * @return the current fill color
+     */
+    public Color getCurrentFillColor() {
+        return myFillColor;
+    }
+    
+    /**
+     * Sets the width at width the current tool will draw.
+     * 
+     * @param theWidth the stroke width to set
+     */
+    public void setCurrentWidth(final int theWidth) {
+        myCurrentWidth = theWidth;
+    }
+    
+    /**
+     * @return the tool_actions
+     *
+    public final List<ToolAction> getToolActions() {
+        return myToolActions;
+    }*/
+    
+    // Inner Class
+    /**
+     *  Listens for mouse events to draw on our panel.
+     * @author 12538
+     *
+     */
+    private class MyMouseHandler extends MouseInputAdapter {
+
         @Override
-        public void mouseClicked(final MouseEvent theEvent) {
-            clickCounter++;            
-            Point newPoint = new Point (theEvent.getPoint());
-            
-            // If the user has clicked an odd number of times, set the startPoint for the line
-            if(clickCounter % 2 == 1) {
-                myLineTool.setStartPoint(newPoint);
-            // Otherwise the user has clicked an even number of times, finish the line
-            }else {
-                myLineTool.setNextPoint(newPoint);
+        public void mousePressed(final MouseEvent theEvent) {
+          /*  if (myCurrentWidth > 0) {
+                if (myCurrentTool instanceof Eraser) {
+                    myCurrentColor = Color.white;
+                } else {
+                    if (theEvent.getButton() == 1) {
+                        myCurrentColor = myDrawColor;
+                    } else {
+                        myCurrentColor = myFillColor;
+                    }
+                }*/
+                myCurrentTool.setStartPoint(theEvent.getPoint());
+                repaint(); 
+        }
+        
+    
+        @Override
+        public void mouseDragged(final MouseEvent theEvent) {
+            if (myCurrentWidth > 0) {
+                myCurrentTool.setNextPoint(theEvent.getPoint());
+                repaint();
             }
-            repaint();
+        }
+    
+        @Override
+        public void mouseReleased(final MouseEvent theEvent) {
+            
+            // No need to repaint() here. The Shape is already drawn.
+            
+            if (myCurrentWidth > 0) {
+                myShapeList.push(new PaintedShape(myCurrentTool.getShape(),
+                                                  myCurrentColor,
+                                                  myCurrentColor,
+                                                  myCurrentWidth,
+                                                  myFill));
+                
+                firePropertyChange("clear", null, true);
+                myCurrentTool.reset();
+                repaint();
+            }
         }
     }
 }

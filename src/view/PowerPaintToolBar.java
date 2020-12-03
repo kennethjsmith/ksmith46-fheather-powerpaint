@@ -1,5 +1,7 @@
 package view;
 
+import java.awt.BorderLayout;
+
 import javax.swing.ButtonGroup;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -8,6 +10,9 @@ import javax.swing.JToolBar;
 
 public class PowerPaintToolBar extends JToolBar {
 
+    // fields
+    // The current tool selected.
+    
     /**
      * Generated Serial ID
      */
@@ -21,6 +26,7 @@ public class PowerPaintToolBar extends JToolBar {
     private final JToolBar myToolBar;
     
     public PowerPaintToolBar() {
+        super("Paint Tool Select");
         this.myToolBar = new JToolBar();
         addButtons(myToolBar);
     }
