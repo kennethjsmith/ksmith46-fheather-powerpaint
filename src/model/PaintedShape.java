@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Paint;
 import java.awt.Shape;
@@ -25,23 +26,19 @@ public class PaintedShape {
     }
 
     public Stroke getStroke() {
-        // TODO Auto-generated method stub
-        return null;
+       return new BasicStroke(myCurrentWidth);
     }
 
-    public Paint getDrawColor() {
-        // TODO Auto-generated method stub
-        return null;
+    public Color getDrawColor() {
+        return myCurrentColor;
     }
 
     public Shape getShape() {
-        // TODO Auto-generated method stub
-        return null;
+        return myShape;
     }
 
     public boolean isFilled() {
-        // TODO Auto-generated method stub
-        return false;
+        return true;
     }
     
 }

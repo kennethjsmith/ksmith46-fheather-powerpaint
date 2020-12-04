@@ -50,8 +50,6 @@ public class PaintPanel extends JPanel{
     
     /**  A generated serial version UID for object Serialization. */
     private static final long serialVersionUID = 8452917670991316606L; 
-
-    private final LineTool myLineTool = new LineTool(); 
     
     private final PowerPaintToolBar myToolBar = new PowerPaintToolBar();
     
@@ -69,12 +67,6 @@ public class PaintPanel extends JPanel{
 
     private Color myFillColor;
     
-    /**
-     * Keeps track of how many times the user has clicked. 
-     * Used in MouseListener.
-     */
-    private int clickCounter;
-    
     // Constructor
 
     /**
@@ -84,10 +76,10 @@ public class PaintPanel extends JPanel{
         super();       
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setBackground(BACKGROUND_COLOR);
-        addMouseListener(new MyMouseHandler());
-        clickCounter = 0;
+        final MyMouseHandler mouseHandler = new MyMouseHandler();
+        addMouseListener(mouseHandler);
         add(myToolBar, BorderLayout.SOUTH);
-        myCurrentWidth = 1;
+        myCurrentWidth = LINE_WIDTH;
         myCurrentTool = new LineTool();
         myCurrentColor = Color.RED;
         myShapeList = new LinkedList<>();
@@ -108,7 +100,9 @@ public class PaintPanel extends JPanel{
         // to draw the previous shapes in the correct order:
         final Iterator<PaintedShape> it = myShapeList.descendingIterator();
         while (it.hasNext()) {
+//            System.out.println(myShapeList.size());
             final PaintedShape current = it.next();
+//            System.out.println(current);
             g2d.setStroke(current.getStroke());
             g2d.setPaint(current.getDrawColor());
             final Shape s = current.getShape();
@@ -129,7 +123,9 @@ public class PaintPanel extends JPanel{
                         0));
         g2d.setPaint(myCurrentColor);
         final Shape s = myCurrentTool.getShape();
-        
+//        System.out.println(myCurrentTool.getName());
+//        System.out.println(myCurrentTool.getStartPoint());
+//        System.out.println(myCurrentTool.getShape());
         if ((!(s instanceof Path2D)) && myFill ) {
             g2d.fill(myCurrentTool.getShape());
         } else {
@@ -244,16 +240,16 @@ public class PaintPanel extends JPanel{
 
         @Override
         public void mousePressed(final MouseEvent theEvent) {
-          /*  if (myCurrentWidth > 0) {
-                if (myCurrentTool instanceof Eraser) {
-                    myCurrentColor = Color.white;
-                } else {
+            if (myCurrentWidth > 0) {
+//                if (myCurrentTool instanceof Eraser) {
+//                    myCurrentColor = Color.white;
+//                } else {
                     if (theEvent.getButton() == 1) {
                         myCurrentColor = myDrawColor;
                     } else {
                         myCurrentColor = myFillColor;
                     }
-                }*/
+                }
                 myCurrentTool.setStartPoint(theEvent.getPoint());
                 repaint(); 
         }

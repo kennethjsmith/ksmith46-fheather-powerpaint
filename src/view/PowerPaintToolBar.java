@@ -28,7 +28,7 @@ public class PowerPaintToolBar extends JToolBar {
     public PowerPaintToolBar() {
         super("Paint Tool Select");
         this.myToolBar = new JToolBar();
-        addButtons(myToolBar);
+        addButtons();
     }
     
     /**
@@ -39,16 +39,15 @@ public class PowerPaintToolBar extends JToolBar {
      * 
      * @param theToolBar the ToolBar to add buttons to 
      */
-    private void addButtons(final JToolBar theToolBar) {
+    private void addButtons() {
 
         final ButtonGroup toolGroup = new ButtonGroup();
         Icon lineIcon = new ImageIcon("/ksmith46-fheather-powerpaint/images/line.gif");
 
         
-        final JButton lineButton = new JButton(lineIcon);
-        lineButton.setText("Line");
+        final JButton lineButton = new JButton("Line", lineIcon);
 //       lineButton.setAction();
-        theToolBar.add(lineButton);
+        myToolBar.add(lineButton);
         toolGroup.add(lineButton);
     }
 }
