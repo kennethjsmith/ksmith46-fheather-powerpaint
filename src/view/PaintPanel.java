@@ -78,6 +78,7 @@ public class PaintPanel extends JPanel{
         setBackground(BACKGROUND_COLOR);
         final MyMouseHandler mouseHandler = new MyMouseHandler();
         addMouseListener(mouseHandler);
+        addMouseMotionListener(mouseHandler);
         myCurrentWidth = LINE_WIDTH;
         myCurrentTool = new LineTool();
         myCurrentColor = Color.RED;
@@ -267,10 +268,10 @@ public class PaintPanel extends JPanel{
     
         @Override
         public void mouseDragged(final MouseEvent theEvent) {
-            if (myCurrentWidth > 0) {
+          //  if (myCurrentWidth > 0) {
                 myCurrentTool.setNextPoint(theEvent.getPoint());
                 repaint();
-            }
+           // }
         }
     
         @Override
