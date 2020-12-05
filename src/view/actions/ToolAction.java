@@ -48,7 +48,7 @@ public class ToolAction extends AbstractAction {
 //            final Color newColor = myColorChooser.getColor();
 //            myColorSwatch.setColor(newColor);
 //            myPaintPanel.setCurrentColor(newColor);
-        };
+//        };
         
     }
     

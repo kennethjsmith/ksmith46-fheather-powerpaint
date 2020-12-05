@@ -1,9 +1,9 @@
-package view;
-
-public class ColorSwatch {
-
-    //constructor
-    public ColorSwatch(Color) {
-        
-    }
-}
+//package view;
+//
+//public class ColorSwatch {
+//
+//    //constructor
+//    public ColorSwatch(Color) {
+//        
+//    }
+//}

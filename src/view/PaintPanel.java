@@ -14,8 +14,10 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import model.PaintedShape;
+import view.actions.ToolAction;
 
 import javax.swing.JPanel;
+import javax.swing.JToolBar;
 import javax.swing.event.MouseInputAdapter;
 
 //import Eraser;
@@ -50,9 +52,7 @@ public class PaintPanel extends JPanel{
     
     /**  A generated serial version UID for object Serialization. */
     private static final long serialVersionUID = 8452917670991316606L; 
-    
-    private final PowerPaintToolBar myToolBar = new PowerPaintToolBar();
-    
+        
     public int myCurrentWidth;
 
     public LineTool myCurrentTool;
@@ -78,7 +78,6 @@ public class PaintPanel extends JPanel{
         setBackground(BACKGROUND_COLOR);
         final MyMouseHandler mouseHandler = new MyMouseHandler();
         addMouseListener(mouseHandler);
-        add(myToolBar, BorderLayout.SOUTH);
         myCurrentWidth = LINE_WIDTH;
         myCurrentTool = new LineTool();
         myCurrentColor = Color.RED;
@@ -86,6 +85,8 @@ public class PaintPanel extends JPanel{
         myFill = true;
         myDrawColor = Color.RED;
         myFillColor = Color.RED;
+       
+
     }
 
 
@@ -107,11 +108,16 @@ public class PaintPanel extends JPanel{
             g2d.setPaint(current.getDrawColor());
             final Shape s = current.getShape();
             
-            if ((!(s instanceof Path2D)) && current.isFilled()) {
-                g2d.fill(current.getShape());
-            } else { 
-                g2d.draw(s);
-            }
+            g2d.draw(s);
+            
+// I don't know what the below section does. 
+// When testing it, I noticed we weren't getting into the "Else" statement.
+// So I put "g2d.draw(s)" above instead.   
+//            if ((!(s instanceof Path2D)) && current.isFilled()) {
+//                g2d.fill(current.getShape());
+//            } else { 
+//                g2d.draw(s);
+//            }
         }
     
         // draw the current shape
@@ -123,14 +129,18 @@ public class PaintPanel extends JPanel{
                         0));
         g2d.setPaint(myCurrentColor);
         final Shape s = myCurrentTool.getShape();
-//        System.out.println(myCurrentTool.getName());
-//        System.out.println(myCurrentTool.getStartPoint());
-//        System.out.println(myCurrentTool.getShape());
-        if ((!(s instanceof Path2D)) && myFill ) {
-            g2d.fill(myCurrentTool.getShape());
-        } else {
-            g2d.draw(s);
-        }
+        g2d.draw(s);
+        System.out.println(myCurrentTool.getStartPoint());
+        
+        
+// I don't know what the below section does. 
+// When testing it, I noticed we weren't getting into the "Else" statement.
+// So I put "g2d.draw(s)" above instead.       
+//        if ((!(s instanceof Path2D)) && myFill ) {
+//            g2d.fill(myCurrentTool.getShape());
+//        } else {
+//            g2d.draw(s);
+//        }
     }
     
     
@@ -264,11 +274,11 @@ public class PaintPanel extends JPanel{
         }
     
         @Override
-        public void mouseReleased(final MouseEvent theEvent) {
-            
+        public void mouseReleased(final MouseEvent theEvent) {            
             // No need to repaint() here. The Shape is already drawn.
             
             if (myCurrentWidth > 0) {
+                myCurrentTool.setNextPoint(theEvent.getPoint());
                 myShapeList.push(new PaintedShape(myCurrentTool.getShape(),
                                                   myCurrentColor,
                                                   myCurrentColor,
