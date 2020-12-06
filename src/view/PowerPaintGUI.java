@@ -1,11 +1,13 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.File;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -14,14 +16,20 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 
 import controller.tools.EraserTool;
 import controller.tools.LineTool;
 import controller.tools.PaintTool;
+import controller.tools.PencilTool;
+import controller.tools.RectangleTool;
 
 
 public class PowerPaintGUI extends JFrame {
@@ -58,8 +66,10 @@ public class PowerPaintGUI extends JFrame {
     
     
     // fields
-    private JPanel myPanel;
-    //private PowerPaintMenuBar myMenuBar;
+    private JPanel myPanel;   
+    private JToolBar myToolBar;
+    private JMenuBar myMenuBar;
+    
     //private ColorAction myCA;
     
     /**
@@ -70,8 +80,12 @@ public class PowerPaintGUI extends JFrame {
         super();
         myPanel = new PaintPanel();
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);                
-        final JToolBar myToolBar = createToolBar();        
+        myToolBar = new JToolBar();
+        myMenuBar = new JMenuBar();
+        assembleToolBar();        
+        assembleMenuBar();
         this.add(myToolBar, BorderLayout.SOUTH);
+        this.add(myMenuBar, BorderLayout.NORTH);
         this.add(myPanel, BorderLayout.CENTER);
         this.pack();
         this.setLocationRelativeTo(null);
@@ -87,28 +101,72 @@ public class PowerPaintGUI extends JFrame {
     }
     
     /**
-     * @return a fully-stocked tool bar.
+     * Assembles a fully-stocked tool bar.
      */
-    private JToolBar createToolBar() {
-        final JToolBar inToolBar = new JToolBar();
+    private void assembleToolBar() {
         final ButtonGroup toolGroup = new ButtonGroup();
         
         
         final JToggleButton lineButton = new JToggleButton(new ToolBarAction
-                ("Line", new ImageIcon("./line.gif"), new LineTool()));        
+              ("Line", new ImageIcon("images\\line.gif"), new LineTool()));        
         toolGroup.add(lineButton);
-        inToolBar.add(lineButton);
-        
-        final Icon eraserIcon = new ImageIcon("/ksmith46-fheather-powerpaint/images/eraser.gif");
+        myToolBar.add(lineButton);
+
+        final Icon eraserIcon = new ImageIcon("images\\eraser.gif");
         final JToggleButton eraserButton = new JToggleButton(new ToolBarAction("Eraser", eraserIcon, new EraserTool()));
         toolGroup.add(eraserButton);
-        inToolBar.add(eraserButton);
+        myToolBar.add(eraserButton);
+        
+      final Icon pencilIcon = new ImageIcon("images\\pencil.gif");
+      final JToggleButton pencilButton = new JToggleButton(new ToolBarAction ("Pencil", pencilIcon, new PencilTool()));
+      toolGroup.add(pencilButton);
+      myToolBar.add(pencilButton);
+
+      final Icon rectangleIcon = new ImageIcon("images\\rectangle.gif");
+      final JToggleButton rectangleButton = new JToggleButton(new ToolBarAction("Rectangle", rectangleIcon, new RectangleTool()));
+      toolGroup.add(rectangleButton);
+      myToolBar.add(rectangleButton);
+//      
+//      final Icon ellipseIcon = new ImageIcon("images\\ellipse.gif");
+//      final JToggleButton ellipseButton = new JToggleButton(new ToolBarAction("Ellipse", ellipseIcon, new EllipseTool()));
+//      toolGroup.add(ellipseButton);
+//      myToolBar.add(ellipseButton);
+        
         
         toolGroup.clearSelection();
-        
-        return inToolBar;
-
     }
+    
+    private void assembleMenuBar() {
+    
+        JMenu myOptions = new JMenu("Options");
+        myOptions.add(new JMenuItem("Thing"));
+        myMenuBar.add(myOptions);
+        
+        JMenu myTools = new JMenu("Tools");
+        ButtonGroup myToolButtonGroup = new ButtonGroup();
+        JRadioButtonMenuItem myPencilMenuItem = new JRadioButtonMenuItem("Pencil");
+        JRadioButtonMenuItem myLineMenuItem = new JRadioButtonMenuItem("Line");
+        JRadioButtonMenuItem myRectangleMenuItem = new JRadioButtonMenuItem("Rectangle");
+        JRadioButtonMenuItem myEllipseMenuItem = new JRadioButtonMenuItem("Ellipse");
+        JRadioButtonMenuItem myEraserMenuItem = new JRadioButtonMenuItem("Eraser");
+        myTools.add(myPencilMenuItem);
+        myTools.add(myLineMenuItem);
+        myTools.add(myRectangleMenuItem);
+        myTools.add(myEllipseMenuItem);
+        myTools.add(myEraserMenuItem);
+        myToolButtonGroup.add(myPencilMenuItem);
+        myToolButtonGroup.add(myLineMenuItem);
+        myToolButtonGroup.add(myRectangleMenuItem);
+        myToolButtonGroup.add(myEllipseMenuItem);
+        myToolButtonGroup.add(myEraserMenuItem);
+        
+        myMenuBar.add(myTools);
+        
+        myMenuBar.add(new JMenu("Help"));
+        
+        
+    }
+    
     private class ToolBarAction extends AbstractAction {
         
         /** A generated serialization ID. */
