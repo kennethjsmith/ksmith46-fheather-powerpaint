@@ -3,8 +3,9 @@ package controller.tools;
 import java.awt.Point;
 import java.awt.Shape;
 import java.awt.event.KeyEvent;
+import java.awt.geom.Path2D;
 
-public class EraserTool extends AbstractPaintTool implements PaintTool {
+public class EraserTool extends AbstractPaintTool {
 
     /**
      * The name of the tool.
@@ -17,25 +18,35 @@ public class EraserTool extends AbstractPaintTool implements PaintTool {
     private static final int MY_MNEMONIC = KeyEvent.VK_P;
     
     /**
-     * The end point for the current line.
+     * Stores the points in this shape.
      */
-    private Point myNextPoint;
+    private Path2D.Double myPath;
     
     public EraserTool() {
         super(MY_NAME, MY_MNEMONIC);
-        myNextPoint = NO_POINT;
+        myPath = new Path2D.Double();
     }
 
+    @Override
+    public void setStartPoint(final Point thePoint) {
+        super.setStartPoint(thePoint);
+        myPath.moveTo(thePoint.getX(), thePoint.getY());
+    }
+    
     @Override
     public Shape getShape() {
-        // TODO Auto-generated method stub
-        return null;
+        return myPath;
+    }
+    
+    @Override
+    public void reset() {
+        super.reset();
+        myPath = new Path2D.Double();
     }
 
     @Override
-    public void setNextPoint(Point thePoint) {
-        // TODO Auto-generated method stub
-
+    public void setNextPoint(final Point thePoint) {
+        myPath.lineTo(thePoint.getX(), thePoint.getY());
     }
 
 }

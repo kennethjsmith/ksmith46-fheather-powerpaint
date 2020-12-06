@@ -66,9 +66,15 @@ public class PowerPaintGUI extends JFrame {
     
     
     // fields
-    private JPanel myPanel;   
+    private PaintPanel myPanel;   
     private JToolBar myToolBar;
     private JMenuBar myMenuBar;
+    
+    private PencilTool myPencilTool;
+    private RectangleTool myRectangleTool;
+    private EraserTool myEraserTool;
+    private LineTool myLineTool;
+//  private EllipseTool myEllipseTool;
     
     //private ColorAction myCA;
     
@@ -78,10 +84,17 @@ public class PowerPaintGUI extends JFrame {
      */
     public PowerPaintGUI() {
         super();
-        myPanel = new PaintPanel();
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);                
+        
+        myPencilTool = new PencilTool();
+        myLineTool = new LineTool();
+        myRectangleTool = new RectangleTool();
+        myEraserTool = new EraserTool();
+//      myEllipseTool = new EllipseTool();
+        
+        myPanel = new PaintPanel(myLineTool);
         myToolBar = new JToolBar();
         myMenuBar = new JMenuBar();
+                
         assembleToolBar();        
         assembleMenuBar();
         this.add(myToolBar, BorderLayout.SOUTH);
@@ -97,7 +110,7 @@ public class PowerPaintGUI extends JFrame {
         
         //menubar = new PowerPaintMenuBar();
         //myFrame.setJMenuBar(menubar);
-        
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
     /**
@@ -108,27 +121,27 @@ public class PowerPaintGUI extends JFrame {
         
         
         final JToggleButton lineButton = new JToggleButton(new ToolBarAction
-              ("Line", new ImageIcon("images\\line.gif"), new LineTool()));        
+              ("Line", new ImageIcon("images\\line.gif"), myLineTool));        
         toolGroup.add(lineButton);
         myToolBar.add(lineButton);
 
         final Icon eraserIcon = new ImageIcon("images\\eraser.gif");
-        final JToggleButton eraserButton = new JToggleButton(new ToolBarAction("Eraser", eraserIcon, new EraserTool()));
+        final JToggleButton eraserButton = new JToggleButton(new ToolBarAction("Eraser", eraserIcon, myEraserTool));
         toolGroup.add(eraserButton);
         myToolBar.add(eraserButton);
         
       final Icon pencilIcon = new ImageIcon("images\\pencil.gif");
-      final JToggleButton pencilButton = new JToggleButton(new ToolBarAction ("Pencil", pencilIcon, new PencilTool()));
+      final JToggleButton pencilButton = new JToggleButton(new ToolBarAction ("Pencil", pencilIcon, myPencilTool));
       toolGroup.add(pencilButton);
       myToolBar.add(pencilButton);
 
       final Icon rectangleIcon = new ImageIcon("images\\rectangle.gif");
-      final JToggleButton rectangleButton = new JToggleButton(new ToolBarAction("Rectangle", rectangleIcon, new RectangleTool()));
+      final JToggleButton rectangleButton = new JToggleButton(new ToolBarAction("Rectangle", rectangleIcon, myRectangleTool));
       toolGroup.add(rectangleButton);
       myToolBar.add(rectangleButton);
 //      
 //      final Icon ellipseIcon = new ImageIcon("images\\ellipse.gif");
-//      final JToggleButton ellipseButton = new JToggleButton(new ToolBarAction("Ellipse", ellipseIcon, new EllipseTool()));
+//      final JToggleButton ellipseButton = new JToggleButton(new ToolBarAction("Ellipse", ellipseIcon, myEllipseTool));
 //      toolGroup.add(ellipseButton);
 //      myToolBar.add(ellipseButton);
         
@@ -195,7 +208,8 @@ public class PowerPaintGUI extends JFrame {
         }
         @Override
         public void actionPerformed(ActionEvent arg0) {
-            System.out.println("actionPerformed");
+            myPanel.setCurrentTool(myTool);
+            System.out.println(myPanel.getCurrentTool());
         }
     }
    

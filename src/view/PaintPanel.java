@@ -20,6 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.event.MouseInputAdapter;
 
+import controller.tools.EraserTool;
 //import Eraser;
 import controller.tools.LineTool;
 import controller.tools.PaintTool;
@@ -55,7 +56,7 @@ public class PaintPanel extends JPanel{
         
     public int myCurrentWidth;
 
-    public LineTool myCurrentTool;
+    public PaintTool myCurrentTool;
 
     public Color myCurrentColor;
 
@@ -72,7 +73,7 @@ public class PaintPanel extends JPanel{
     /**
      * Constructs a new general path panel.
      */
-    public PaintPanel() {
+    public PaintPanel(PaintTool theTool) {
         super();       
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setBackground(BACKGROUND_COLOR);
@@ -80,7 +81,7 @@ public class PaintPanel extends JPanel{
         addMouseListener(mouseHandler);
         addMouseMotionListener(mouseHandler);
         myCurrentWidth = LINE_WIDTH;
-        myCurrentTool = new LineTool();
+        myCurrentTool = theTool;
         myCurrentColor = Color.RED;
         myShapeList = new LinkedList<>();
         myFill = true;
@@ -170,12 +171,11 @@ public class PaintPanel extends JPanel{
      * @param theTool the current tool to set
      */
     public void setCurrentTool(final PaintTool theTool) {
-        myCurrentTool = new LineTool();
-        /**if (theTool == null) {
-            myCurrentTool = myToolActions.get(0).getMyTool();
+        if (theTool == null) {
+            myCurrentTool = theTool;//myToolActions.get(0).getMyTool();
         } else {
             myCurrentTool = theTool;
-        }*/
+        }
     }
     
     /**
@@ -252,15 +252,15 @@ public class PaintPanel extends JPanel{
         @Override
         public void mousePressed(final MouseEvent theEvent) {
             if (myCurrentWidth > 0) {
-//                if (myCurrentTool instanceof Eraser) {
-//                    myCurrentColor = Color.white;
-//                } else {
-                    if (theEvent.getButton() == 1) {
+                if (myCurrentTool instanceof EraserTool) {
+                    myCurrentColor = Color.white;
+                } else {
+                   // if (theEvent.getButton() == 1) {
                         myCurrentColor = myDrawColor;
-                    } else {
-                        myCurrentColor = myFillColor;
-                    }
-                }
+                 //   } else {
+                  //      myCurrentColor = myFillColor;}
+                  }
+            }
                 myCurrentTool.setStartPoint(theEvent.getPoint());
                 repaint(); 
         }
