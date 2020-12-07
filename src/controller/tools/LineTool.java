@@ -45,7 +45,6 @@ public class LineTool extends AbstractPaintTool {
     @Override
     public void setNextPoint(Point thePoint) {
         myNextPoint = thePoint;
-        System.out.println("The next point is: " + myNextPoint);
     }
     
     @Override

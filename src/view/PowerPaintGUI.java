@@ -22,9 +22,11 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JSlider;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 
+import controller.tools.EllipseTool;
 import controller.tools.EraserTool;
 import controller.tools.LineTool;
 import controller.tools.PaintTool;
@@ -74,7 +76,8 @@ public class PowerPaintGUI extends JFrame {
     private RectangleTool myRectangleTool;
     private EraserTool myEraserTool;
     private LineTool myLineTool;
-//  private EllipseTool myEllipseTool;
+    private static JMenuItem myClearButton;
+    private EllipseTool myEllipseTool;
     
     //private ColorAction myCA;
     
@@ -83,13 +86,15 @@ public class PowerPaintGUI extends JFrame {
      * 
      */
     public PowerPaintGUI() {
-        super();
+        super("Power Paint");
+        ImageIcon myPaintIcon = new ImageIcon("images\\paintbrush.png");
+        setIconImage(myPaintIcon.getImage());
         
         myPencilTool = new PencilTool();
         myLineTool = new LineTool();
         myRectangleTool = new RectangleTool();
         myEraserTool = new EraserTool();
-//      myEllipseTool = new EllipseTool();
+        myEllipseTool = new EllipseTool();
         
         myPanel = new PaintPanel(myLineTool);
         myToolBar = new JToolBar();
@@ -113,55 +118,89 @@ public class PowerPaintGUI extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
+    public static void setClearButton(boolean theBool) {
+        myClearButton.setEnabled(theBool);
+    }
+    
     /**
      * Assembles a fully-stocked tool bar.
      */
     private void assembleToolBar() {
         final ButtonGroup toolGroup = new ButtonGroup();
         
+        final Icon pencilIcon = new ImageIcon("images\\pencil.gif");
+        final JToggleButton pencilButton = new JToggleButton(new ToolBarAction ("Pencil", pencilIcon, myPencilTool));
+        toolGroup.add(pencilButton);
+        myToolBar.add(pencilButton);
+
         
         final JToggleButton lineButton = new JToggleButton(new ToolBarAction
               ("Line", new ImageIcon("images\\line.gif"), myLineTool));        
         toolGroup.add(lineButton);
         myToolBar.add(lineButton);
 
+        final Icon rectangleIcon = new ImageIcon("images\\rectangle.gif");
+        final JToggleButton rectangleButton = new JToggleButton(new ToolBarAction("Rectangle", rectangleIcon, myRectangleTool));
+        toolGroup.add(rectangleButton);
+        myToolBar.add(rectangleButton);
+        
+        final Icon ellipseIcon = new ImageIcon("images\\ellipse.gif");
+        final JToggleButton ellipseButton = new JToggleButton(new ToolBarAction("Ellipse", ellipseIcon, myEllipseTool));
+        toolGroup.add(ellipseButton);
+        myToolBar.add(ellipseButton);
+        
         final Icon eraserIcon = new ImageIcon("images\\eraser.gif");
         final JToggleButton eraserButton = new JToggleButton(new ToolBarAction("Eraser", eraserIcon, myEraserTool));
         toolGroup.add(eraserButton);
         myToolBar.add(eraserButton);
         
-      final Icon pencilIcon = new ImageIcon("images\\pencil.gif");
-      final JToggleButton pencilButton = new JToggleButton(new ToolBarAction ("Pencil", pencilIcon, myPencilTool));
-      toolGroup.add(pencilButton);
-      myToolBar.add(pencilButton);
-
-      final Icon rectangleIcon = new ImageIcon("images\\rectangle.gif");
-      final JToggleButton rectangleButton = new JToggleButton(new ToolBarAction("Rectangle", rectangleIcon, myRectangleTool));
-      toolGroup.add(rectangleButton);
-      myToolBar.add(rectangleButton);
-//      
-//      final Icon ellipseIcon = new ImageIcon("images\\ellipse.gif");
-//      final JToggleButton ellipseButton = new JToggleButton(new ToolBarAction("Ellipse", ellipseIcon, myEllipseTool));
-//      toolGroup.add(ellipseButton);
-//      myToolBar.add(ellipseButton);
-        
-        
-        toolGroup.clearSelection();
+       lineButton.setSelected(true);
     }
     
     private void assembleMenuBar() {
-    
+        
+        //add option menu
         JMenu myOptions = new JMenu("Options");
-        myOptions.add(new JMenuItem("Thing"));
+        
+        //create thickness submenu
+        JMenu myThickness = new JMenu("Thickness");
+        
+        //create thickness slider
+        JSlider myThicknessSlider = new JSlider(0, 20, 10);
+        
+        //set slider variables and add to the thickness submenu
+        myThicknessSlider.setMajorTickSpacing(5);
+        myThicknessSlider.setMinorTickSpacing(1);
+        myThicknessSlider.setPaintTicks(true);
+        myThicknessSlider.setSnapToTicks(true);
+        myThicknessSlider.setPaintLabels(true);
+        myThicknessSlider.addChangeListener(e -> myPanel.setCurrentWidth(myThicknessSlider.getValue()));
+        myThickness.add(myThicknessSlider);
+        
+        //add the thickness submenu to the options menu
+        myOptions.add(myThickness);
+        
+        myOptions.addSeparator();
+        
+        //
+        myOptions.add(new JMenuItem("Primary Color..."));
+        myOptions.add(new JMenuItem("Secondary Color..."));
+        myOptions.addSeparator();
+        
+        //clear button
+        myClearButton = new JMenuItem("Clear");
+        myClearButton.addActionListener(e -> myPanel.clear());
+        myClearButton.setEnabled(false);
+        myOptions.add(myClearButton);
         myMenuBar.add(myOptions);
         
         JMenu myTools = new JMenu("Tools");
         ButtonGroup myToolButtonGroup = new ButtonGroup();
-        JRadioButtonMenuItem myPencilMenuItem = new JRadioButtonMenuItem("Pencil");
-        JRadioButtonMenuItem myLineMenuItem = new JRadioButtonMenuItem("Line");
-        JRadioButtonMenuItem myRectangleMenuItem = new JRadioButtonMenuItem("Rectangle");
-        JRadioButtonMenuItem myEllipseMenuItem = new JRadioButtonMenuItem("Ellipse");
-        JRadioButtonMenuItem myEraserMenuItem = new JRadioButtonMenuItem("Eraser");
+        JRadioButtonMenuItem myPencilMenuItem = new JRadioButtonMenuItem(new ToolBarAction("Pencil", myPencilTool));
+        JRadioButtonMenuItem myLineMenuItem = new JRadioButtonMenuItem(new ToolBarAction("Line", myLineTool));
+        JRadioButtonMenuItem myRectangleMenuItem = new JRadioButtonMenuItem(new ToolBarAction("Rectangle", myRectangleTool));
+        JRadioButtonMenuItem myEllipseMenuItem = new JRadioButtonMenuItem(new ToolBarAction("Ellipse", myEllipseTool));
+        JRadioButtonMenuItem myEraserMenuItem = new JRadioButtonMenuItem(new ToolBarAction("Eraser", myEraserTool));
         myTools.add(myPencilMenuItem);
         myTools.add(myLineMenuItem);
         myTools.add(myRectangleMenuItem);
@@ -172,6 +211,8 @@ public class PowerPaintGUI extends JFrame {
         myToolButtonGroup.add(myRectangleMenuItem);
         myToolButtonGroup.add(myEllipseMenuItem);
         myToolButtonGroup.add(myEraserMenuItem);
+        
+        myLineMenuItem.setSelected(true);
         
         myMenuBar.add(myTools);
         
@@ -186,6 +227,19 @@ public class PowerPaintGUI extends JFrame {
         private static final long serialVersionUID = 5378597116905801274L;
 
         private final PaintTool myTool;
+        
+        ToolBarAction(final String theName, final PaintTool theTool){
+            super(theName);
+            myTool = theTool;
+            
+            // set a mnemonic on the first character of the name
+            putValue(Action.MNEMONIC_KEY,
+                     KeyEvent.getExtendedKeyCodeForChar(theName.charAt(0)));
+            
+            // coordinate button selection
+            putValue(Action.SELECTED_KEY, true);
+
+        }
         
         ToolBarAction(final String theName, final Icon theIcon, final PaintTool theTool){
             super(theName);
@@ -203,13 +257,12 @@ public class PowerPaintGUI extends JFrame {
             
             // coordinate button selection
             putValue(Action.SELECTED_KEY, true);
-            
-            
+
         }
+        
         @Override
         public void actionPerformed(ActionEvent arg0) {
             myPanel.setCurrentTool(myTool);
-            System.out.println(myPanel.getCurrentTool());
         }
     }
    

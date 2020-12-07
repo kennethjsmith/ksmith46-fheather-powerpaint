@@ -3,6 +3,7 @@ package view;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -16,6 +17,7 @@ import java.util.LinkedList;
 import model.PaintedShape;
 import view.actions.ToolAction;
 
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.event.MouseInputAdapter;
@@ -49,7 +51,7 @@ public class PaintPanel extends JPanel{
     /**
      * The line width.
      */
-    public static final int LINE_WIDTH = 8;
+    public static final int LINE_WIDTH = 10;
     
     /**  A generated serial version UID for object Serialization. */
     private static final long serialVersionUID = 8452917670991316606L; 
@@ -76,6 +78,7 @@ public class PaintPanel extends JPanel{
     public PaintPanel(PaintTool theTool) {
         super();       
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
         setBackground(BACKGROUND_COLOR);
         final MyMouseHandler mouseHandler = new MyMouseHandler();
         addMouseListener(mouseHandler);
@@ -103,9 +106,7 @@ public class PaintPanel extends JPanel{
         // to draw the previous shapes in the correct order:
         final Iterator<PaintedShape> it = myShapeList.descendingIterator();
         while (it.hasNext()) {
-//            System.out.println(myShapeList.size());
             final PaintedShape current = it.next();
-//            System.out.println(current);
             g2d.setStroke(current.getStroke());
             g2d.setPaint(current.getDrawColor());
             final Shape s = current.getShape();
@@ -132,7 +133,6 @@ public class PaintPanel extends JPanel{
         g2d.setPaint(myCurrentColor);
         final Shape s = myCurrentTool.getShape();
         g2d.draw(s);
-        System.out.println(myCurrentTool.getStartPoint());
         
         
 // I don't know what the below section does. 
@@ -153,6 +153,7 @@ public class PaintPanel extends JPanel{
         myShapeList.clear();
         firePropertyChange("clear", null, false);
         repaint();
+        PowerPaintGUI.setClearButton(false);
     }
     
     /**
@@ -268,10 +269,10 @@ public class PaintPanel extends JPanel{
     
         @Override
         public void mouseDragged(final MouseEvent theEvent) {
-          //  if (myCurrentWidth > 0) {
+            if (myCurrentWidth > 0) {
                 myCurrentTool.setNextPoint(theEvent.getPoint());
                 repaint();
-           // }
+            }
         }
     
         @Override
@@ -285,7 +286,7 @@ public class PaintPanel extends JPanel{
                                                   myCurrentColor,
                                                   myCurrentWidth,
                                                   myFill));
-                
+                PowerPaintGUI.setClearButton(true);
                 firePropertyChange("clear", null, true);
                 myCurrentTool.reset();
                 repaint();
