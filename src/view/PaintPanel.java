@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import model.PaintedShape;
+import model.UWColor;
 import view.actions.ToolAction;
 
 import javax.swing.JMenuItem;
@@ -66,9 +67,9 @@ public class PaintPanel extends JPanel{
 
     private boolean myFill;
 
-    private Color myDrawColor;
+    private Color myPrimaryColor;
 
-    private Color myFillColor;
+    private Color mySecondaryColor;
     
     // Constructor
 
@@ -85,11 +86,11 @@ public class PaintPanel extends JPanel{
         addMouseMotionListener(mouseHandler);
         myCurrentWidth = LINE_WIDTH;
         myCurrentTool = theTool;
-        myCurrentColor = Color.RED;
+        myCurrentColor = myPrimaryColor;
         myShapeList = new LinkedList<>();
         myFill = true;
-        myDrawColor = Color.RED;
-        myFillColor = Color.RED;
+        myPrimaryColor = UWColor.getPurple();
+        mySecondaryColor = UWColor.getGold();
        
 
     }
@@ -193,37 +194,37 @@ public class PaintPanel extends JPanel{
      * 
      * @param theColor the paint color to use
      */
-    public void setCurrentColor(final Color theColor) {
-        myDrawColor = theColor;
+    public void setPrimaryColor(final Color theColor) {
+        myPrimaryColor = theColor;
     }
     
     
     /**
-     * Sets the current fill color.
+     * Sets the current secondary color.
      * 
      * @param theColor the paint color to use
      */
-    public void setCurrentColor2(final Color theColor) {
-        myFillColor = theColor;
+    public void setSecondaryColor(final Color theColor) {
+        mySecondaryColor = theColor;
     }
     
     /**
-     * Returns the current draw color.
+     * Returns the primary color.
      * 
-     * @return the current draw color
+     * @return the primary color
      */
-    public Color getCurrentDrawColor() {
-        return myDrawColor;
+    public Color getPrimaryColor() {
+        return myPrimaryColor;
     }
     
     
     /**
-     * Returns the current fill color.
+     * Returns the secondaryColor.
      * 
-     * @return the current fill color
+     * @return the secondaryColor
      */
-    public Color getCurrentFillColor() {
-        return myFillColor;
+    public Color getSecondaryColor() {
+        return mySecondaryColor;
     }
     
     /**
@@ -256,11 +257,12 @@ public class PaintPanel extends JPanel{
                 if (myCurrentTool instanceof EraserTool) {
                     myCurrentColor = Color.white;
                 } else {
-                   // if (theEvent.getButton() == 1) {
-                        myCurrentColor = myDrawColor;
-                 //   } else {
-                  //      myCurrentColor = myFillColor;}
-                  }
+                    if (theEvent.getButton() == 1) {
+                        myCurrentColor = myPrimaryColor;
+                    } else {
+                        myCurrentColor = mySecondaryColor;
+                    }
+                }
             }
                 myCurrentTool.setStartPoint(theEvent.getPoint());
                 repaint(); 

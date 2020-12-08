@@ -19,6 +19,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JRadioButtonMenuItem;
@@ -32,6 +33,8 @@ import controller.tools.LineTool;
 import controller.tools.PaintTool;
 import controller.tools.PencilTool;
 import controller.tools.RectangleTool;
+import view.actions.ColorAction;
+import view.actions.ColorAction2;
 
 
 public class PowerPaintGUI extends JFrame {
@@ -78,6 +81,7 @@ public class PowerPaintGUI extends JFrame {
     private LineTool myLineTool;
     private static JMenuItem myClearButton;
     private EllipseTool myEllipseTool;
+    private ImageIcon myPaintIcon;
     
     //private ColorAction myCA;
     
@@ -87,7 +91,7 @@ public class PowerPaintGUI extends JFrame {
      */
     public PowerPaintGUI() {
         super("Power Paint");
-        ImageIcon myPaintIcon = new ImageIcon("images\\paintbrush.png");
+        myPaintIcon = new ImageIcon("images\\paintbrush.png");
         setIconImage(myPaintIcon.getImage());
         
         myPencilTool = new PencilTool();
@@ -183,8 +187,8 @@ public class PowerPaintGUI extends JFrame {
         myOptions.addSeparator();
         
         //
-        myOptions.add(new JMenuItem("Primary Color..."));
-        myOptions.add(new JMenuItem("Secondary Color..."));
+        myOptions.add(new JMenuItem(new ColorAction(myPanel)));
+        myOptions.add(new JMenuItem(new ColorAction2(myPanel)));
         myOptions.addSeparator();
         
         //clear button
@@ -216,7 +220,20 @@ public class PowerPaintGUI extends JFrame {
         
         myMenuBar.add(myTools);
         
-        myMenuBar.add(new JMenu("Help"));
+        JMenu myHelpMenu = new JMenu("Help");
+        myMenuBar.add(myHelpMenu);
+        
+        JMenuItem myAboutButton = new JMenuItem("About...");
+        myHelpMenu.add(myAboutButton);
+        
+        myAboutButton.addActionListener(e -> {
+           
+            JFrame myOptionFrame = new JFrame("About");
+            JOptionPane.showMessageDialog(null, "Heather Finch + Ken Smith\n"
+                   + "Autumn 2020\n"
+                   + "TCSS 305 Assignment 4", "About", JOptionPane.INFORMATION_MESSAGE, (Icon)myPaintIcon);           
+        });
+        
         
         
     }

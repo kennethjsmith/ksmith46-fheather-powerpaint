@@ -11,7 +11,12 @@ import javax.swing.JColorChooser;
 import view.ColorSwatch;
 import view.PaintPanel;
 
-public class ColorAction extends AbstractAction{
+public class ColorAction2 extends AbstractAction{
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -4521489897253823537L;
 
     /**
      * A custom property for propertyChangeListeners to observe.
@@ -41,14 +46,14 @@ public class ColorAction extends AbstractAction{
      * 
      * @param thePanel the paint panel
      */
-    public ColorAction(final PaintPanel thePanel) {
-        super("Primary Color...");
+    public ColorAction2(final PaintPanel thePanel) {
+        super("Secondary Color...");
         myPaintPanel = thePanel;
         putValue(MNEMONIC_KEY, KeyEvent.VK_P);
-        myColorSwatch = new ColorSwatch(myPaintPanel.getPrimaryColor());
+        myColorSwatch = new ColorSwatch(myPaintPanel.getSecondaryColor());
         //putValue(SMALL_ICON, myColorSwatch);
-        myColorChooser = new JColorChooser(myPaintPanel.getPrimaryColor());
-        myColorChooser.setColor(myPaintPanel.getPrimaryColor());    
+        myColorChooser = new JColorChooser(myPaintPanel.getSecondaryColor());
+        myColorChooser.setColor(myPaintPanel.getSecondaryColor());    
     }
     
     @Override
@@ -59,7 +64,7 @@ public class ColorAction extends AbstractAction{
         final ActionListener onOkButtonClicked = (theActionEvent) -> {
             final Color newColor = myColorChooser.getColor();
             myColorSwatch.setColor(newColor);
-            myPaintPanel.setPrimaryColor(newColor);
+            myPaintPanel.setSecondaryColor(newColor);
         };
         
     // Cancel action is null because we don't need any action to happen on Cancel

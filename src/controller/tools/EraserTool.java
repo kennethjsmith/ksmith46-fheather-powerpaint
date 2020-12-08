@@ -15,7 +15,7 @@ public class EraserTool extends AbstractPaintTool {
     /**
      * The mnemonic of the tool.
      */
-    private static final int MY_MNEMONIC = KeyEvent.VK_P;
+    private static final int MY_MNEMONIC = KeyEvent.VK_A;
     
     /**
      * Stores the points in this shape.
