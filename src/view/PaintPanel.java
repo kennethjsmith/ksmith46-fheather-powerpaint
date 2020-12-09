@@ -16,7 +16,6 @@ import java.util.LinkedList;
 
 import model.PaintedShape;
 import model.UWColor;
-import view.actions.ToolAction;
 
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -70,8 +69,6 @@ public class PaintPanel extends JPanel{
     private Color myPrimaryColor;
 
     private Color mySecondaryColor;
-    
-    // Constructor
 
     /**
      * Constructs a new general path panel.
@@ -91,8 +88,6 @@ public class PaintPanel extends JPanel{
         myFill = true;
         myPrimaryColor = UWColor.getPurple();
         mySecondaryColor = UWColor.getGold();
-       
-
     }
 
 
@@ -102,9 +97,7 @@ public class PaintPanel extends JPanel{
         final Graphics2D g2d = (Graphics2D) theGraphics;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                              RenderingHints.VALUE_ANTIALIAS_ON);
-       
-        // Iterate through the deque in reverse order
-        // to draw the previous shapes in the correct order:
+        
         final Iterator<PaintedShape> it = myShapeList.descendingIterator();
         while (it.hasNext()) {
             final PaintedShape current = it.next();
@@ -113,15 +106,6 @@ public class PaintPanel extends JPanel{
             final Shape s = current.getShape();
             
             g2d.draw(s);
-            
-// I don't know what the below section does. 
-// When testing it, I noticed we weren't getting into the "Else" statement.
-// So I put "g2d.draw(s)" above instead.   
-//            if ((!(s instanceof Path2D)) && current.isFilled()) {
-//                g2d.fill(current.getShape());
-//            } else { 
-//                g2d.draw(s);
-//            }
         }
     
         // draw the current shape
@@ -134,16 +118,6 @@ public class PaintPanel extends JPanel{
         g2d.setPaint(myCurrentColor);
         final Shape s = myCurrentTool.getShape();
         g2d.draw(s);
-        
-        
-// I don't know what the below section does. 
-// When testing it, I noticed we weren't getting into the "Else" statement.
-// So I put "g2d.draw(s)" above instead.       
-//        if ((!(s instanceof Path2D)) && myFill ) {
-//            g2d.fill(myCurrentTool.getShape());
-//        } else {
-//            g2d.draw(s);
-//        }
     }
     
     
@@ -173,11 +147,15 @@ public class PaintPanel extends JPanel{
      * @param theTool the current tool to set
      */
     public void setCurrentTool(final PaintTool theTool) {
+        
         if (theTool == null) {
-            myCurrentTool = theTool;//myToolActions.get(0).getMyTool();
+            firePropertyChange(myCurrentTool.getName(), myCurrentTool, theTool); 
+            myCurrentTool = theTool;
         } else {
+            firePropertyChange(myCurrentTool.getName(), myCurrentTool, theTool); 
             myCurrentTool = theTool;
         }
+        
     }
     
     /**
@@ -236,13 +214,6 @@ public class PaintPanel extends JPanel{
         myCurrentWidth = theWidth;
     }
     
-    /**
-     * @return the tool_actions
-     *
-    public final List<ToolAction> getToolActions() {
-        return myToolActions;
-    }*/
-    
     // Inner Class
     /**
      *  Listens for mouse events to draw on our panel.
@@ -279,7 +250,6 @@ public class PaintPanel extends JPanel{
     
         @Override
         public void mouseReleased(final MouseEvent theEvent) {            
-            // No need to repaint() here. The Shape is already drawn.
             
             if (myCurrentWidth > 0) {
                 myCurrentTool.setNextPoint(theEvent.getPoint());

@@ -49,7 +49,7 @@ public class ColorAction2 extends AbstractAction{
     public ColorAction2(final PaintPanel thePanel) {
         super("Secondary Color...");
         myPaintPanel = thePanel;
-        putValue(MNEMONIC_KEY, KeyEvent.VK_P);
+        putValue(MNEMONIC_KEY, KeyEvent.VK_S);
         myColorSwatch = new ColorSwatch(myPaintPanel.getSecondaryColor());
         //putValue(SMALL_ICON, myColorSwatch);
         myColorChooser = new JColorChooser(myPaintPanel.getSecondaryColor());

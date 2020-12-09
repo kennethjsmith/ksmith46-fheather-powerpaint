@@ -7,6 +7,8 @@ import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 
 import javax.swing.AbstractAction;
@@ -26,6 +28,7 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSlider;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
 
 import controller.tools.EllipseTool;
 import controller.tools.EraserTool;
@@ -38,37 +41,11 @@ import view.actions.ColorAction2;
 
 
 public class PowerPaintGUI extends JFrame {
-    
-    // constants to capture screen dimensions
-    /** A ToolKit. */
-    //private static final Toolkit KIT = Toolkit.getDefaultToolkit();
-    
-    /** The Dimension of the screen. */
-    //private static final Dimension SCREEN_SIZE = KIT.getScreenSize();
-    
-    /** The number of rows. */
-    //private static final int ROW = 4;
-    
-    /** The number of columns. */
-    //private static final int COL = 1;
-    
-    /** Amount in Pixels for the Horizontal margin. */
-    //private static final int HORIZONATAL_MARGIN = 20; 
-    
-    /** Amount in Pixels for the Vertical margin. */
-    //private static final int VERTICALL_MARGIN = 10; 
-    
-    /** Amount in columns for the text area. */
-    //private static final int TEXT_AREA_COLS = 25; 
-    
-    //private static final int WINDOW_SIZE = 200;
 
     /**
      * 
      */
-    private static final long serialVersionUID = 5679320332309261419L;
-    /** The default size of the color panel. */
-    
+    private static final long serialVersionUID = 5679320332309261419L;    
     
     // fields
     private PaintPanel myPanel;   
@@ -82,9 +59,8 @@ public class PowerPaintGUI extends JFrame {
     private static JMenuItem myClearButton;
     private EllipseTool myEllipseTool;
     private ImageIcon myPaintIcon;
-    
-    //private ColorAction myCA;
-    
+    private ButtonGroup myToolButtonGroup;
+        
     /**
      * Constructs the GUI.
      * 
@@ -106,19 +82,14 @@ public class PowerPaintGUI extends JFrame {
                 
         assembleToolBar();        
         assembleMenuBar();
+               
         this.add(myToolBar, BorderLayout.SOUTH);
         this.add(myMenuBar, BorderLayout.NORTH);
         this.add(myPanel, BorderLayout.CENTER);
         this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
-        myPanel.setVisible(true);
- 
-        start();
-        
-        
-        //menubar = new PowerPaintMenuBar();
-        //myFrame.setJMenuBar(menubar);
+        myPanel.setVisible(true);        
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
@@ -127,7 +98,7 @@ public class PowerPaintGUI extends JFrame {
     }
     
     /**
-     * Assembles a fully-stocked tool bar.
+     * Assembles a complete Tool Bar.
      */
     private void assembleToolBar() {
         final ButtonGroup toolGroup = new ButtonGroup();
@@ -161,18 +132,19 @@ public class PowerPaintGUI extends JFrame {
        lineButton.setSelected(true);
     }
     
+    /**
+     * Assembles a complete Menu Bar.
+     */
     private void assembleMenuBar() {
         
         //add option menu
         JMenu myOptions = new JMenu("Options");
+        myOptions.setMnemonic(KeyEvent.VK_O);
         
         //create thickness submenu
         JMenu myThickness = new JMenu("Thickness");
-        
-        //create thickness slider
+        myThickness.setMnemonic(KeyEvent.VK_T);
         JSlider myThicknessSlider = new JSlider(0, 20, 10);
-        
-        //set slider variables and add to the thickness submenu
         myThicknessSlider.setMajorTickSpacing(5);
         myThicknessSlider.setMinorTickSpacing(1);
         myThicknessSlider.setPaintTicks(true);
@@ -180,27 +152,29 @@ public class PowerPaintGUI extends JFrame {
         myThicknessSlider.setPaintLabels(true);
         myThicknessSlider.addChangeListener(e -> myPanel.setCurrentWidth(myThicknessSlider.getValue()));
         myThickness.add(myThicknessSlider);
-        
-        //add the thickness submenu to the options menu
-        myOptions.add(myThickness);
-        
+        myOptions.add(myThickness);        
         myOptions.addSeparator();
         
-        //
+        //Primary and Secondary Color
         myOptions.add(new JMenuItem(new ColorAction(myPanel)));
         myOptions.add(new JMenuItem(new ColorAction2(myPanel)));
         myOptions.addSeparator();
         
         //clear button
         myClearButton = new JMenuItem("Clear");
+        myClearButton.setMnemonic(KeyEvent.VK_C);
         myClearButton.addActionListener(e -> myPanel.clear());
         myClearButton.setEnabled(false);
         myOptions.add(myClearButton);
         myMenuBar.add(myOptions);
         
+        // Tools submenu
         JMenu myTools = new JMenu("Tools");
+        myTools.setMnemonic(KeyEvent.VK_T);
         ButtonGroup myToolButtonGroup = new ButtonGroup();
+        
         JRadioButtonMenuItem myPencilMenuItem = new JRadioButtonMenuItem(new ToolBarAction("Pencil", myPencilTool));
+//myPencilMenuItem.addPropertyChangeListener(new ToolSelectListener());
         JRadioButtonMenuItem myLineMenuItem = new JRadioButtonMenuItem(new ToolBarAction("Line", myLineTool));
         JRadioButtonMenuItem myRectangleMenuItem = new JRadioButtonMenuItem(new ToolBarAction("Rectangle", myRectangleTool));
         JRadioButtonMenuItem myEllipseMenuItem = new JRadioButtonMenuItem(new ToolBarAction("Ellipse", myEllipseTool));
@@ -222,8 +196,11 @@ public class PowerPaintGUI extends JFrame {
         
         JMenu myHelpMenu = new JMenu("Help");
         myMenuBar.add(myHelpMenu);
+        myHelpMenu.setMnemonic(KeyEvent.VK_H);
+
         
         JMenuItem myAboutButton = new JMenuItem("About...");
+        myAboutButton.setMnemonic(KeyEvent.VK_A);
         myHelpMenu.add(myAboutButton);
         
         myAboutButton.addActionListener(e -> {
@@ -232,10 +209,7 @@ public class PowerPaintGUI extends JFrame {
             JOptionPane.showMessageDialog(null, "Heather Finch + Ken Smith\n"
                    + "Autumn 2020\n"
                    + "TCSS 305 Assignment 4", "About", JOptionPane.INFORMATION_MESSAGE, (Icon)myPaintIcon);           
-        });
-        
-        
-        
+        });         
     }
     
     private class ToolBarAction extends AbstractAction {
@@ -251,11 +225,10 @@ public class PowerPaintGUI extends JFrame {
             
             // set a mnemonic on the first character of the name
             putValue(Action.MNEMONIC_KEY,
-                     KeyEvent.getExtendedKeyCodeForChar(theName.charAt(0)));
+                     KeyEvent.getExtendedKeyCodeForChar(theTool.getMnemonic()));
             
             // coordinate button selection
             putValue(Action.SELECTED_KEY, true);
-
         }
         
         ToolBarAction(final String theName, final Icon theIcon, final PaintTool theTool){
@@ -270,7 +243,7 @@ public class PowerPaintGUI extends JFrame {
             
             // set a mnemonic on the first character of the name
             putValue(Action.MNEMONIC_KEY,
-                     KeyEvent.getExtendedKeyCodeForChar(theName.charAt(0)));
+                     KeyEvent.getExtendedKeyCodeForChar(theTool.getMnemonic()));
             
             // coordinate button selection
             putValue(Action.SELECTED_KEY, true);
@@ -280,40 +253,26 @@ public class PowerPaintGUI extends JFrame {
         @Override
         public void actionPerformed(ActionEvent arg0) {
             myPanel.setCurrentTool(myTool);
+            putValue(Action.SELECTED_KEY, true);
         }
     }
-   
-    /**
-     * Performs all tasks necessary to display the UI.
-     *
-     */
-    private void start() {
-        
-        
-//        ??? Below taken from HelloGoodByeExample
-//        final Action[] actions = {new HelloAction(panel), new GoodbyeAction(panel)};
+    
+    
+//    private class ToolSelectListener implements PropertyChangeListener {
 //
-//        for (final Action current : actions) {
-//            menuBar.createMenuButton(current);
-//            toolBar.createToggleButton(current);
+//        @Override
+//        public void propertyChange(PropertyChangeEvent e) {
+//            String propertyName = e.getPropertyName();
+//            System.out.println(propertyName);
+//            /*if ("focusOwner".equals(propertyName) {
+//                
+//            } else if ("focusedWindow".equals(propertyName) {
+//                ...
+//            }*/
 //        }
-        
-        
-        // set a custom icon on the JFrame title bar
-        //final URL url = PowerPaintGUI.class.getResource(ICON_DIRECTORY + "/w.gif"
-        //final ImageIcon img = new ImageIcon(url);
-        //setIconImage(img.getImage().getScaledInstance(15,  -1,  java.awt.Image.SCA
+//
 //        
-//        CA = new ColorAction(myPaintPanel);
-//        //final ColorAction2 ca2 = new ColorAction2(myPaintPanel);
-// //       final PowerPaintMenuBar menubar = new PowerPaintMenuBar(this, ca, ca2); 
-//        menubar = new PowerPaintMenuBar();
-//        myPaintPanel.addPropertyChangeListener((PropertyChangeListener) menubar);
-//        
-//        this.setJMenuBar(menubar);
-////       
-//        final PowerPaintToolBar toolbar = new PowerPaintToolBar("My Tool Actions");
-//        myPanel.add(toolbar, BorderLayout.SOUTH);
-    }
+//    }
+   
 }
     
