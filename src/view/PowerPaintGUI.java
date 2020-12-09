@@ -42,9 +42,7 @@ import view.actions.ColorAction2;
 
 public class PowerPaintGUI extends JFrame {
 
-    /**
-     * 
-     */
+    /** A generated serialization ID. */
     private static final long serialVersionUID = 5679320332309261419L;    
     
     // fields
@@ -63,7 +61,6 @@ public class PowerPaintGUI extends JFrame {
         
     /**
      * Constructs the GUI.
-     * 
      */
     public PowerPaintGUI() {
         super("Power Paint");
@@ -174,7 +171,6 @@ public class PowerPaintGUI extends JFrame {
         ButtonGroup myToolButtonGroup = new ButtonGroup();
         
         JRadioButtonMenuItem myPencilMenuItem = new JRadioButtonMenuItem(new ToolBarAction("Pencil", myPencilTool));
-//myPencilMenuItem.addPropertyChangeListener(new ToolSelectListener());
         JRadioButtonMenuItem myLineMenuItem = new JRadioButtonMenuItem(new ToolBarAction("Line", myLineTool));
         JRadioButtonMenuItem myRectangleMenuItem = new JRadioButtonMenuItem(new ToolBarAction("Rectangle", myRectangleTool));
         JRadioButtonMenuItem myEllipseMenuItem = new JRadioButtonMenuItem(new ToolBarAction("Ellipse", myEllipseTool));
@@ -197,7 +193,6 @@ public class PowerPaintGUI extends JFrame {
         JMenu myHelpMenu = new JMenu("Help");
         myMenuBar.add(myHelpMenu);
         myHelpMenu.setMnemonic(KeyEvent.VK_H);
-
         
         JMenuItem myAboutButton = new JMenuItem("About...");
         myAboutButton.setMnemonic(KeyEvent.VK_A);
@@ -223,11 +218,9 @@ public class PowerPaintGUI extends JFrame {
             super(theName);
             myTool = theTool;
             
-            // set a mnemonic on the first character of the name
             putValue(Action.MNEMONIC_KEY,
                      KeyEvent.getExtendedKeyCodeForChar(theTool.getMnemonic()));
             
-            // coordinate button selection
             putValue(Action.SELECTED_KEY, true);
         }
         
@@ -241,13 +234,10 @@ public class PowerPaintGUI extends JFrame {
             putValue(Action.LARGE_ICON_KEY, largeIcon);
             myTool = theTool;
             
-            // set a mnemonic on the first character of the name
             putValue(Action.MNEMONIC_KEY,
                      KeyEvent.getExtendedKeyCodeForChar(theTool.getMnemonic()));
             
-            // coordinate button selection
             putValue(Action.SELECTED_KEY, true);
-
         }
         
         @Override
@@ -255,24 +245,6 @@ public class PowerPaintGUI extends JFrame {
             myPanel.setCurrentTool(myTool);
             putValue(Action.SELECTED_KEY, true);
         }
-    }
-    
-    
-//    private class ToolSelectListener implements PropertyChangeListener {
-//
-//        @Override
-//        public void propertyChange(PropertyChangeEvent e) {
-//            String propertyName = e.getPropertyName();
-//            System.out.println(propertyName);
-//            /*if ("focusOwner".equals(propertyName) {
-//                
-//            } else if ("focusedWindow".equals(propertyName) {
-//                ...
-//            }*/
-//        }
-//
-//        
-//    }
-   
+    }   
 }
     

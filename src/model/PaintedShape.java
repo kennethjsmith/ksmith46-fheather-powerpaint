@@ -14,15 +14,12 @@ public class PaintedShape {
     private Color myCurrentColor;
     private Color myCurrentColor2;
     private int myCurrentWidth;
-    private boolean myFill;
 
-    public PaintedShape(Shape theShape, Color theCurrentColor, Color theCurrentColor2, int theCurrentWidth, boolean theFill) {
+    public PaintedShape(Shape theShape, Color theCurrentColor, Color theCurrentColor2, int theCurrentWidth) {
         myShape = theShape;
         myCurrentColor = theCurrentColor;
         myCurrentColor2 = theCurrentColor2;
-        myCurrentWidth = theCurrentWidth;
-        myFill = theFill;
-                
+        myCurrentWidth = theCurrentWidth;                
     }
 
     public Stroke getStroke() {

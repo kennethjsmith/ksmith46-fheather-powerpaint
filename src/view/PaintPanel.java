@@ -10,21 +10,16 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.event.MouseEvent;
-import java.awt.geom.Path2D;
 import java.util.Iterator;
 import java.util.LinkedList;
 
 import model.PaintedShape;
 import model.UWColor;
 
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JToolBar;
 import javax.swing.event.MouseInputAdapter;
 
 import controller.tools.EraserTool;
-//import Eraser;
-import controller.tools.LineTool;
 import controller.tools.PaintTool;
 
 public class PaintPanel extends JPanel{
@@ -64,8 +59,6 @@ public class PaintPanel extends JPanel{
 
     private LinkedList<PaintedShape> myShapeList;
 
-    private boolean myFill;
-
     private Color myPrimaryColor;
 
     private Color mySecondaryColor;
@@ -85,11 +78,9 @@ public class PaintPanel extends JPanel{
         myCurrentTool = theTool;
         myCurrentColor = myPrimaryColor;
         myShapeList = new LinkedList<>();
-        myFill = true;
         myPrimaryColor = UWColor.getPurple();
         mySecondaryColor = UWColor.getGold();
     }
-
 
     @Override
     public void paintComponent(final Graphics theGraphics) {
@@ -132,16 +123,6 @@ public class PaintPanel extends JPanel{
     }
     
     /**
-     *  Turns the grid on or off depending on the parameter passed in.
-     *  
-     *  @param theGrid true to turn the grid on; false to turn the grid off
-     */
-    public void setFill(final boolean theGrid) {
-        myFill = theGrid;
-        repaint();
-    }
-    
-    /**
      * Sets the current paint tool.
      * 
      * @param theTool the current tool to set
@@ -149,10 +130,10 @@ public class PaintPanel extends JPanel{
     public void setCurrentTool(final PaintTool theTool) {
         
         if (theTool == null) {
-            firePropertyChange(myCurrentTool.getName(), myCurrentTool, theTool); 
+//firePropertyChange(myCurrentTool.getName(), myCurrentTool, theTool); 
             myCurrentTool = theTool;
         } else {
-            firePropertyChange(myCurrentTool.getName(), myCurrentTool, theTool); 
+//firePropertyChange(myCurrentTool.getName(), myCurrentTool, theTool); 
             myCurrentTool = theTool;
         }
         
@@ -217,7 +198,7 @@ public class PaintPanel extends JPanel{
     // Inner Class
     /**
      *  Listens for mouse events to draw on our panel.
-     * @author 12538
+     * @author 12538 
      *
      */
     private class MyMouseHandler extends MouseInputAdapter {
@@ -256,8 +237,7 @@ public class PaintPanel extends JPanel{
                 myShapeList.push(new PaintedShape(myCurrentTool.getShape(),
                                                   myCurrentColor,
                                                   myCurrentColor,
-                                                  myCurrentWidth,
-                                                  myFill));
+                                                  myCurrentWidth));
                 PowerPaintGUI.setClearButton(true);
                 firePropertyChange("clear", null, true);
                 myCurrentTool.reset();

@@ -13,14 +13,14 @@ import view.PaintPanel;
 
 public class ColorAction extends AbstractAction{
 
+    /** A generated version ID for serialization. */
+    private static final long serialVersionUID = 7869489286195463142L;
+
     /**
      * A custom property for propertyChangeListeners to observe.
      */
     public static final String COLOR = "color";
-    
-    /** A generated version ID for serialization. */
-    //add later?
-    
+        
     /**
      * The paint panel for this application.
      */
@@ -53,16 +53,13 @@ public class ColorAction extends AbstractAction{
     
     @Override
     public void actionPerformed(final ActionEvent theEvent) {
-        
-        // The action when the user clicks OK in the JColorChooser dialog
-        // Created and stored as a Lambda to keep the call to creatDialog clean.
+      
         final ActionListener onOkButtonClicked = (theActionEvent) -> {
             final Color newColor = myColorChooser.getColor();
             myColorSwatch.setColor(newColor);
             myPaintPanel.setPrimaryColor(newColor);
         };
         
-    // Cancel action is null because we don't need any action to happen on Cancel
         JColorChooser.
             createDialog(null,
                         "Select a color",
