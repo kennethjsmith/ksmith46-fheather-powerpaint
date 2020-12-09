@@ -5,7 +5,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import view.PowerPaintGUI;
 
-public class PowerPointMain {
+final public class PowerPointMain {
     
     /**private constructor to inhibit instantiation. */
     private PowerPointMain() {
