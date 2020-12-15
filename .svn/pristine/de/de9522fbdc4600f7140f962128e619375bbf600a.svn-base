@@ -5,14 +5,10 @@ import java.awt.Color;
 import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.Stroke;
-import java.io.Serializable;
 
-public class PaintedShape implements Serializable {
+public class PaintedShape {
     
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 4352774499551104845L;
+    // fields
     
     private Shape myShape;
     private Color myCurrentColor;

@@ -6,8 +6,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JColorChooser;
 
+import controller.ColorIcon;
+import model.UWColor;
 import view.ColorSwatch;
 import view.PaintPanel;
 
@@ -41,6 +44,8 @@ public class ColorAction2 extends AbstractAction{
      */
     private final JColorChooser myColorChooser;
     
+    ColorIcon secondaryColorIcon;
+    
     /**
      * Constructs an Action for changing the selected Color.
      * 
@@ -53,7 +58,9 @@ public class ColorAction2 extends AbstractAction{
         myColorSwatch = new ColorSwatch(myPaintPanel.getSecondaryColor());
         //putValue(SMALL_ICON, myColorSwatch);
         myColorChooser = new JColorChooser(myPaintPanel.getSecondaryColor());
-        myColorChooser.setColor(myPaintPanel.getSecondaryColor());    
+        myColorChooser.setColor(myPaintPanel.getSecondaryColor());
+        secondaryColorIcon = new ColorIcon(UWColor.getGold());
+        putValue(Action.SMALL_ICON, secondaryColorIcon);
     }
     
     @Override
@@ -65,6 +72,7 @@ public class ColorAction2 extends AbstractAction{
             final Color newColor = myColorChooser.getColor();
             myColorSwatch.setColor(newColor);
             myPaintPanel.setSecondaryColor(newColor);
+            secondaryColorIcon.updateColor(newColor);
         };
         
     // Cancel action is null because we don't need any action to happen on Cancel

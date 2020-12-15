@@ -5,25 +5,27 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
-import javax.swing.AbstractAction;import javax.swing.Action;
-import javax.swing.Icon;
+import javax.swing.AbstractAction;
 import javax.swing.JColorChooser;
 
-import controller.ColorIcon;
-import model.UWColor;
 import view.ColorSwatch;
 import view.PaintPanel;
 
-public class ColorAction extends AbstractAction{
+public class ColorAction2 extends AbstractAction{
 
-    /** A generated version ID for serialization. */
-    private static final long serialVersionUID = 7869489286195463142L;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -4521489897253823537L;
 
     /**
      * A custom property for propertyChangeListeners to observe.
      */
     public static final String COLOR = "color";
-        
+    
+    /** A generated version ID for serialization. */
+    //add later?
+    
     /**
      * The paint panel for this application.
      */
@@ -39,36 +41,33 @@ public class ColorAction extends AbstractAction{
      */
     private final JColorChooser myColorChooser;
     
-    ColorIcon primaryColorIcon;
-    
     /**
      * Constructs an Action for changing the selected Color.
      * 
      * @param thePanel the paint panel
      */
-    public ColorAction(final PaintPanel thePanel) {
-        super("Primary Color...");
+    public ColorAction2(final PaintPanel thePanel) {
+        super("Secondary Color...");
         myPaintPanel = thePanel;
-        putValue(MNEMONIC_KEY, KeyEvent.VK_P);
-        myColorSwatch = new ColorSwatch(myPaintPanel.getPrimaryColor());
+        putValue(MNEMONIC_KEY, KeyEvent.VK_S);
+        myColorSwatch = new ColorSwatch(myPaintPanel.getSecondaryColor());
         //putValue(SMALL_ICON, myColorSwatch);
-        myColorChooser = new JColorChooser(myPaintPanel.getPrimaryColor());
-        myColorChooser.setColor(myPaintPanel.getPrimaryColor());    
-        primaryColorIcon = new ColorIcon(UWColor.getPurple());
-        putValue(Action.SMALL_ICON, primaryColorIcon);
-        
+        myColorChooser = new JColorChooser(myPaintPanel.getSecondaryColor());
+        myColorChooser.setColor(myPaintPanel.getSecondaryColor());    
     }
     
     @Override
     public void actionPerformed(final ActionEvent theEvent) {
-      
+        
+        // The action when the user clicks OK in the JColorChooser dialog
+        // Created and stored as a Lambda to keep the call to creatDialog clean.
         final ActionListener onOkButtonClicked = (theActionEvent) -> {
             final Color newColor = myColorChooser.getColor();
             myColorSwatch.setColor(newColor);
-            myPaintPanel.setPrimaryColor(newColor);
-            primaryColorIcon.updateColor(newColor);
+            myPaintPanel.setSecondaryColor(newColor);
         };
         
+    // Cancel action is null because we don't need any action to happen on Cancel
         JColorChooser.
             createDialog(null,
                         "Select a color",

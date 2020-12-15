@@ -5,12 +5,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
-import javax.swing.AbstractAction;import javax.swing.Action;
-import javax.swing.Icon;
+import javax.swing.AbstractAction;
 import javax.swing.JColorChooser;
 
-import controller.ColorIcon;
-import model.UWColor;
 import view.ColorSwatch;
 import view.PaintPanel;
 
@@ -39,8 +36,6 @@ public class ColorAction extends AbstractAction{
      */
     private final JColorChooser myColorChooser;
     
-    ColorIcon primaryColorIcon;
-    
     /**
      * Constructs an Action for changing the selected Color.
      * 
@@ -54,9 +49,6 @@ public class ColorAction extends AbstractAction{
         //putValue(SMALL_ICON, myColorSwatch);
         myColorChooser = new JColorChooser(myPaintPanel.getPrimaryColor());
         myColorChooser.setColor(myPaintPanel.getPrimaryColor());    
-        primaryColorIcon = new ColorIcon(UWColor.getPurple());
-        putValue(Action.SMALL_ICON, primaryColorIcon);
-        
     }
     
     @Override
@@ -66,7 +58,6 @@ public class ColorAction extends AbstractAction{
             final Color newColor = myColorChooser.getColor();
             myColorSwatch.setColor(newColor);
             myPaintPanel.setPrimaryColor(newColor);
-            primaryColorIcon.updateColor(newColor);
         };
         
         JColorChooser.
