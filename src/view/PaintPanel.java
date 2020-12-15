@@ -27,6 +27,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.event.MouseInputAdapter;
 
+import controller.tools.AbstractPaintTool;
 import controller.tools.EraserTool;
 import controller.tools.PaintTool;
 
@@ -72,6 +73,8 @@ public class PaintPanel extends JPanel{
     private Color myPrimaryColor;
 
     private Color mySecondaryColor;
+    
+    private int myCurrentMouseButton;
 
     /**
      * Constructs a new general path panel.
@@ -91,6 +94,9 @@ public class PaintPanel extends JPanel{
         myRedoList = new LinkedList<>();
         myPrimaryColor = UWColor.getPurple();
         mySecondaryColor = UWColor.getGold();
+        
+        myCurrentMouseButton = 0; 
+        
     }
 
     @Override
@@ -141,11 +147,9 @@ public class PaintPanel extends JPanel{
      */
     public void setCurrentTool(final PaintTool theTool) {
         
-        if (theTool == null) {
-//firePropertyChange(myCurrentTool.getName(), myCurrentTool, theTool); 
+        if (theTool == null) { 
             myCurrentTool = theTool;
         } else {
-//firePropertyChange(myCurrentTool.getName(), myCurrentTool, theTool); 
             myCurrentTool = theTool;
         }
         
@@ -295,25 +299,26 @@ public class PaintPanel extends JPanel{
 
         @Override
         public void mousePressed(final MouseEvent theEvent) {
-            if (myCurrentWidth > 0) {
+            if (myCurrentWidth > 0 && myCurrentMouseButton == 0) {
+                myCurrentMouseButton = theEvent.getButton();
                 if (myCurrentTool instanceof EraserTool) {
                     myCurrentColor = Color.white;
                 } else {
-                    if (theEvent.getButton() == 1) {
+                    if (myCurrentMouseButton == 1) {
                         myCurrentColor = myPrimaryColor;
                     } else {
                         myCurrentColor = mySecondaryColor;
                     }
                 }
-            }
                 myCurrentTool.setStartPoint(theEvent.getPoint());
                 repaint(); 
+            }
         }
         
     
         @Override
         public void mouseDragged(final MouseEvent theEvent) {
-            if (myCurrentWidth > 0) {
+            if (myCurrentWidth > 0 && myCurrentTool.getStartPoint() != AbstractPaintTool.NO_POINT) {
                 myCurrentTool.setNextPoint(theEvent.getPoint());
                 repaint();
             }
@@ -322,7 +327,7 @@ public class PaintPanel extends JPanel{
         @Override
         public void mouseReleased(final MouseEvent theEvent) {            
             
-            if (myCurrentWidth > 0) {
+            if (myCurrentWidth > 0 && theEvent.getButton() == myCurrentMouseButton) {
                 myCurrentTool.setNextPoint(theEvent.getPoint());
                 myShapeList.push(new PaintedShape(myCurrentTool.getShape(),
                                                   myCurrentColor,
@@ -332,6 +337,7 @@ public class PaintPanel extends JPanel{
                 PowerPaintGUI.setClearButton(true);
                 firePropertyChange("clear", null, true);
                 myCurrentTool.reset();
+                myCurrentMouseButton = 0;
                 repaint();
             }
         }

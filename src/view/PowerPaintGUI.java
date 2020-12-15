@@ -60,7 +60,16 @@ public class PowerPaintGUI extends JFrame {
     private static JMenuItem myClearButton;
     private EllipseTool myEllipseTool;
     private ImageIcon myPaintIcon;
-    private ButtonGroup myToolButtonGroup;
+
+    private ToolBarAction myPencilAction;
+
+    private ToolBarAction myLineAction;
+
+    private ToolBarAction myRectangleAction;
+
+    private ToolBarAction myEllipseAction;
+
+    private ToolBarAction myEraserAction;
         
     /**
      * Constructs the GUI.
@@ -79,6 +88,13 @@ public class PowerPaintGUI extends JFrame {
         myPanel = new PaintPanel(myLineTool);
         myToolBar = new JToolBar();
         myMenuBar = new JMenuBar();
+        
+        myPencilAction = new ToolBarAction ("Pencil", new ImageIcon("images\\pencil.gif"), myPencilTool);
+        myLineAction = new ToolBarAction("Line", new ImageIcon("images\\line.gif"), myLineTool);
+        myRectangleAction = new ToolBarAction("Rectangle", new ImageIcon("images\\rectangle.gif"), myRectangleTool);
+        myEllipseAction = new ToolBarAction("Ellipse", new ImageIcon("images\\ellipse.gif"), myEllipseTool);
+        myEraserAction = new ToolBarAction("Eraser", new ImageIcon("images\\eraser.gif"), myEraserTool);
+                
                 
         assembleToolBar();        
         assembleMenuBar();
@@ -105,29 +121,25 @@ public class PowerPaintGUI extends JFrame {
     private void assembleToolBar() {
         final ButtonGroup toolGroup = new ButtonGroup();
         
-        final Icon pencilIcon = new ImageIcon("images\\pencil.gif");
-        final JToggleButton pencilButton = new JToggleButton(new ToolBarAction ("Pencil", pencilIcon, myPencilTool));
+        final JToggleButton pencilButton = new JToggleButton(myPencilAction);
         toolGroup.add(pencilButton);
         myToolBar.add(pencilButton);
 
         
-        final JToggleButton lineButton = new JToggleButton(new ToolBarAction
-              ("Line", new ImageIcon("images\\line.gif"), myLineTool));        
+        
+        final JToggleButton lineButton = new JToggleButton(myLineAction);        
         toolGroup.add(lineButton);
         myToolBar.add(lineButton);
 
-        final Icon rectangleIcon = new ImageIcon("images\\rectangle.gif");
-        final JToggleButton rectangleButton = new JToggleButton(new ToolBarAction("Rectangle", rectangleIcon, myRectangleTool));
+        final JToggleButton rectangleButton = new JToggleButton(myRectangleAction);
         toolGroup.add(rectangleButton);
         myToolBar.add(rectangleButton);
         
-        final Icon ellipseIcon = new ImageIcon("images\\ellipse.gif");
-        final JToggleButton ellipseButton = new JToggleButton(new ToolBarAction("Ellipse", ellipseIcon, myEllipseTool));
+        final JToggleButton ellipseButton = new JToggleButton(myEllipseAction);
         toolGroup.add(ellipseButton);
         myToolBar.add(ellipseButton);
         
-        final Icon eraserIcon = new ImageIcon("images\\eraser.gif");
-        final JToggleButton eraserButton = new JToggleButton(new ToolBarAction("Eraser", eraserIcon, myEraserTool));
+        final JToggleButton eraserButton = new JToggleButton(myEraserAction);
         toolGroup.add(eraserButton);
         myToolBar.add(eraserButton);
         
@@ -204,11 +216,13 @@ public class PowerPaintGUI extends JFrame {
         myTools.setMnemonic(KeyEvent.VK_T);
         ButtonGroup myToolButtonGroup = new ButtonGroup();
         
-        JRadioButtonMenuItem myPencilMenuItem = new JRadioButtonMenuItem(new ToolBarAction("Pencil", myPencilTool));
-        JRadioButtonMenuItem myLineMenuItem = new JRadioButtonMenuItem(new ToolBarAction("Line", myLineTool));
-        JRadioButtonMenuItem myRectangleMenuItem = new JRadioButtonMenuItem(new ToolBarAction("Rectangle", myRectangleTool));
-        JRadioButtonMenuItem myEllipseMenuItem = new JRadioButtonMenuItem(new ToolBarAction("Ellipse", myEllipseTool));
-        JRadioButtonMenuItem myEraserMenuItem = new JRadioButtonMenuItem(new ToolBarAction("Eraser", myEraserTool));
+        
+        
+        JRadioButtonMenuItem myPencilMenuItem = new JRadioButtonMenuItem(myPencilAction);
+        JRadioButtonMenuItem myLineMenuItem = new JRadioButtonMenuItem(myLineAction);
+        JRadioButtonMenuItem myRectangleMenuItem = new JRadioButtonMenuItem(myRectangleAction);
+        JRadioButtonMenuItem myEllipseMenuItem = new JRadioButtonMenuItem(myEllipseAction);
+        JRadioButtonMenuItem myEraserMenuItem = new JRadioButtonMenuItem(myEraserAction);
         myTools.add(myPencilMenuItem);
         myTools.add(myLineMenuItem);
         myTools.add(myRectangleMenuItem);
