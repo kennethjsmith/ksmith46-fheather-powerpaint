@@ -46,7 +46,7 @@ public abstract class AbstractPaintTool implements PaintTool {
     }
     
     /**
-     *
+     * @return myName the name of the tool
      */
     @Override
     public String getName() {
@@ -54,7 +54,7 @@ public abstract class AbstractPaintTool implements PaintTool {
     }
     
     /**
-     *
+     * @return myMnemonic the mnemonic for the tool
      */
     @Override
     public int getMnemonic() {
@@ -62,7 +62,7 @@ public abstract class AbstractPaintTool implements PaintTool {
     }
     
     /**
-     *
+     * Sets the start point.
      */
     @Override
     public void setStartPoint(final Point thePoint) {
@@ -70,7 +70,7 @@ public abstract class AbstractPaintTool implements PaintTool {
     }
     
     /**
-     *
+     * @return myStartPoint
      */
     @Override
     public Point getStartPoint() {

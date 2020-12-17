@@ -3,6 +3,14 @@ package controller.tools;
 import java.awt.Point;
 import java.awt.Shape;
 
+/**
+ * UWT TCSS 305 Section C Programming Practicum - Prof. Tom Capaul
+ * 
+ * This class represents an interface for all paint tools.
+ * 
+ * @authors Heather Finch (fheather) and Ken Smith (ksmith46)
+ * @version 12/16/2020
+ */
 public interface PaintTool {
 
     /**

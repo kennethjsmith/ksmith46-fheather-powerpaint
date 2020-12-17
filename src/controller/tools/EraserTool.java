@@ -26,7 +26,7 @@ public class EraserTool extends PencilTool {
     private static final int MY_MNEMONIC = KeyEvent.VK_A;
     
     /**
-     *
+     * A constructor which calls on the super constructor in the PencilTool class.
      */
     public EraserTool() {
         super(MY_NAME, MY_MNEMONIC);

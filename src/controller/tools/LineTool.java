@@ -39,7 +39,7 @@ public class LineTool extends AbstractPaintTool {
     }
     
     /**
-     * 
+     * @returns a new Line2D shape
      */
     @Override
     public Shape getShape() {
@@ -48,7 +48,9 @@ public class LineTool extends AbstractPaintTool {
     }
     
     /**
+     * Sets the start point via call to super method, and sets theNextPoint.
      * 
+     * @param thePoint the new start point
      */
     @Override
     public void setStartPoint(final Point thePoint) {
@@ -57,21 +59,12 @@ public class LineTool extends AbstractPaintTool {
     }
     
     /**
-     * 
+     * Sets the next point.
+     * @param thePoint the new next point
      */
     @Override
     public void setNextPoint(Point thePoint) {
         myNextPoint = thePoint;
     }
     
-    /**
-     * 
-     */
-    @Override
-    public void reset() {
-        super.reset();
-    }
-
-
-
 }

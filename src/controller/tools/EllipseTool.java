@@ -35,7 +35,9 @@ public class EllipseTool extends RectangleTool {
     }
     
     /**
-     * @return ellipse an Ellipse2D object
+     * Returns an ellipse shape.
+     * 
+     * @return inEllipse an Ellipse2D object
      */
     @Override
     public Shape getShape() {

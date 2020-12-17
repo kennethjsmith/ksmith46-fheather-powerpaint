@@ -52,8 +52,9 @@ public class RectangleTool extends AbstractPaintTool {
     }
     
     /**
-     *
-     *@return inRectangle a Rectangle2D object
+     * Returns a rectangle shape.
+     * 
+     * @return inRectangle a Rectangle2D object
      */
     @Override
     public Shape getShape() {
@@ -63,7 +64,9 @@ public class RectangleTool extends AbstractPaintTool {
     }    
     
     /**
-     *
+     * Sets the start point via call to super method, and sets theNextPoint.
+     * 
+     * @param thePoint the new start point
      */
     @Override
     public void setStartPoint(final Point thePoint) {
@@ -72,7 +75,9 @@ public class RectangleTool extends AbstractPaintTool {
     }
     
     /**
-     *
+     * Sets the next point.
+     * 
+     * @param thePoint the new next point
      */
     @Override
     public void setNextPoint(Point thePoint) {
@@ -89,14 +94,4 @@ public class RectangleTool extends AbstractPaintTool {
        return myNextPoint;
    }
     
-    /**
-     *
-     */
-    @Override
-    public void reset() {
-        super.reset();
-    }
-
-
-
 }

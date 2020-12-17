@@ -1,4 +1,4 @@
-package controller;
+package view;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -33,6 +33,7 @@ public class ColorIcon implements Icon {
     
     /**
      * Updates the color.
+     * 
      * @param theNewColor
      */
     public void updateColor(Color theNewColor){
@@ -40,6 +41,8 @@ public class ColorIcon implements Icon {
     }
     
     /**
+     * Returns the height.
+     * 
      * @return HEIGHT
      */
     @Override
@@ -48,6 +51,8 @@ public class ColorIcon implements Icon {
     }
     
     /**
+     * Returns the width.
+     * 
      * @return WIDTH
      */
     @Override
@@ -56,22 +61,18 @@ public class ColorIcon implements Icon {
     }
     
     /**
+     * This method paints our custom icon.
      * 
+     * @param theComponent an image observer
+     * @param theGraphics the graphics to draw
+     * @param theX the x-coordinate
+     * @param theY the y-coordinate
      */
     @Override
-    public void paintIcon(Component arg0, Graphics arg1, int arg2, int arg3) {
-        doDrawing(arg1, arg2, arg3);
+    public void paintIcon(Component theComponent, Graphics theGraphics, int theX, int theY) {
+        Graphics2D g2d = (Graphics2D) theGraphics; //.create(); create makes a copy of the graphics object and should be disposed when done, seems unnecessary
+        g2d.setColor(myIconColor);
+        g2d.fillRect(theX + 1, theY + 1, WIDTH - 2, HEIGHT - 2);
     }
     
-    /**
-     * 
-     * @param g
-     * @param x
-     * @param y
-     */
-    public void doDrawing(Graphics g, int x, int y) {
-        Graphics2D g2d = (Graphics2D) g; //.create();
-        g2d.setColor(myIconColor);
-        g2d.fillRect(x + 1, y + 1, WIDTH - 2, HEIGHT - 2);
-    }
 }

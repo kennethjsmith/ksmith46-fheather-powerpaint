@@ -45,39 +45,34 @@ import controller.tools.PaintTool;
  * @version 12/16/2020
  */
 public class PaintPanel extends JPanel{
-    /**
-     * The panel width.
-     */
-    public static final int WIDTH = 400;
-
-    /**
-     * The panel height.
-     */
-    public static final int HEIGHT = 400;
-
-    /**
-     * The background color of the panel.
-     */
-    public static final Color BACKGROUND_COLOR = Color.WHITE;
-
-    /**
-     * The color to paint with.
-     */
-    public static final Color FOREGROUND_COLOR = Color.RED;
-
-    /**
-     * The line width.
-     */
-    public static final int LINE_WIDTH = 10;
+    
+    // constants
     
     /**  A generated serial version UID for object Serialization. */
     private static final long serialVersionUID = 8452917670991316606L; 
+    
+    /** The panel width. */
+    public static final int WIDTH = 400;
+
+    /** The panel height. */
+    public static final int HEIGHT = 400;
+
+    /** The background color of the panel. */
+    public static final Color BACKGROUND_COLOR = Color.WHITE;
+
+    /** The color to paint with. */
+    public static final Color FOREGROUND_COLOR = Color.RED;
+
+    /** The line width. */
+    public static final int LINE_WIDTH = 10;
         
-    public int myCurrentWidth;
+    // fields
+    
+    private int myCurrentWidth;
 
-    public PaintTool myCurrentTool;
+    private PaintTool myCurrentTool;
 
-    public Color myCurrentColor;
+    private Color myCurrentColor;
 
     private LinkedList<PaintedShape> myShapeList;
     
@@ -87,11 +82,11 @@ public class PaintPanel extends JPanel{
 
     private Color mySecondaryColor;
     
-    // an int for tracking the current mouse button in order to prevent multi-mouseclick bugs
+    // Used for tracking the current mouse button in order to prevent multi-mouseclick bugs.
     private int myCurrentMouseButton;
 
     /**
-     * Constructs a new general path panel.
+     * Constructs a new PaintPanel.
      */
     public PaintPanel(PaintTool theTool) {
         super();       
@@ -114,7 +109,8 @@ public class PaintPanel extends JPanel{
     }
 
     /**
-     *
+     * Paints the panel with the shapes from the painted shape list and the current shape.
+     * Executes every time repaint() is called.
      */
     @Override
     public void paintComponent(final Graphics theGraphics) {
@@ -229,7 +225,7 @@ public class PaintPanel extends JPanel{
     }
     
     /**
-     *
+     * Removes the last shape from the shape list and adds it to the redo list before repainting.
      */
     public void undoLastDrawing() {
         if(myShapeList.size() > 0) {
@@ -240,7 +236,7 @@ public class PaintPanel extends JPanel{
     }
     
     /**
-     *
+     * Removes the last shape from the redo list and adds it to the shape list before repainting.
      */
     public void redoLastUno() {
         if(myRedoList.size() > 0) {
@@ -251,7 +247,7 @@ public class PaintPanel extends JPanel{
     }
     
     /**
-     *
+     * Uses an output stream to save the current shape list.
      */
     public void save() {
         JFileChooser fileChooser = new JFileChooser();
@@ -281,7 +277,7 @@ public class PaintPanel extends JPanel{
     }
     
     /**
-     *
+     * Uses an input stream to load a shape list from the chosen file.
      */
     public void load() {
         myShapeList.clear();
@@ -298,8 +294,7 @@ public class PaintPanel extends JPanel{
                 ObjectInputStream in = new ObjectInputStream 
                                              (fileStream); 
       
-                // Method for deserialization of object 
-                myShapeList = (LinkedList<PaintedShape>)in.readObject(); 
+                myShapeList = (LinkedList<PaintedShape>)in.readObject();
       
                 in.close(); 
                 fileStream.close(); 
@@ -334,7 +329,7 @@ public class PaintPanel extends JPanel{
     private class MyMouseHandler extends MouseInputAdapter {
 
        /**
-        *
+        * Handles click event.
         */
         @Override
         public void mousePressed(final MouseEvent theEvent) {
@@ -355,7 +350,7 @@ public class PaintPanel extends JPanel{
         }
         
        /**
-        *
+        * Handles drag event.
         */
         @Override
         public void mouseDragged(final MouseEvent theEvent) {
@@ -366,7 +361,7 @@ public class PaintPanel extends JPanel{
         }
     
        /**
-        *
+        * Handles click released event.
         */
         @Override
         public void mouseReleased(final MouseEvent theEvent) {            
@@ -379,6 +374,7 @@ public class PaintPanel extends JPanel{
                 myRedoList.clear();
                 PowerPaintGUI.setClearButton(true);
                 firePropertyChange("clear", null, true);
+                // reset is important for preventing multi-click events, dragging with the non-current mouse button
                 myCurrentTool.reset();
                 myCurrentMouseButton = 0;
                 repaint();

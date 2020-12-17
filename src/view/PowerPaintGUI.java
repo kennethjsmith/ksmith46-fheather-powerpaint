@@ -31,7 +31,6 @@ import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 
-import controller.ColorIcon;
 import controller.tools.EllipseTool;
 import controller.tools.EraserTool;
 import controller.tools.LineTool;
@@ -66,20 +65,17 @@ public class PowerPaintGUI extends JFrame {
     private RectangleTool myRectangleTool;
     private EraserTool myEraserTool;
     private LineTool myLineTool;
-    private static JMenuItem myClearButton;
     private EllipseTool myEllipseTool;
-    private ImageIcon myPaintIcon;
 
     private ToolBarAction myPencilAction;
-
     private ToolBarAction myLineAction;
-
     private ToolBarAction myRectangleAction;
-
     private ToolBarAction myEllipseAction;
-
     private ToolBarAction myEraserAction;
         
+    private static JMenuItem myClearButton;
+    private ImageIcon myPaintIcon;
+    
     /**
      * Constructs the GUI.
      */
@@ -118,6 +114,12 @@ public class PowerPaintGUI extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
+    /**
+     * Enables and disables the clear button as needed.
+     * Clear button is disabled when there is nothing to clear from the panel.
+     * 
+     * @param theBool
+     */
     public static void setClearButton(boolean theBool) {
         myClearButton.setEnabled(theBool);
     }
@@ -134,8 +136,6 @@ public class PowerPaintGUI extends JFrame {
         toolGroup.add(pencilButton);
         myToolBar.add(pencilButton);
 
-        
-        
         final JToggleButton lineButton = new JToggleButton(myLineAction);        
         toolGroup.add(lineButton);
         myToolBar.add(lineButton);
@@ -152,7 +152,7 @@ public class PowerPaintGUI extends JFrame {
         toolGroup.add(eraserButton);
         myToolBar.add(eraserButton);
         
-       lineButton.setSelected(true);
+        lineButton.setSelected(true);
     }
     
     /**
@@ -263,6 +263,7 @@ public class PowerPaintGUI extends JFrame {
                    + "TCSS 305 Assignment 4", "About", JOptionPane.INFORMATION_MESSAGE, (Icon)myPaintIcon);           
         });         
     }
+    
     /**
      *  
      *  
@@ -275,16 +276,13 @@ public class PowerPaintGUI extends JFrame {
 
         private final PaintTool myTool;
         
-        ToolBarAction(final String theName, final PaintTool theTool){
-            super(theName);
-            myTool = theTool;
-            
-            putValue(Action.MNEMONIC_KEY,
-                     KeyEvent.getExtendedKeyCodeForChar(theTool.getMnemonic()));
-            
-            putValue(Action.SELECTED_KEY, true);
-        }
-        
+        /**
+         * Constructs a tool bar action that changes the tool and updates all relevant buttons.
+         * 
+         * @param theName the name for the button
+         * @param theIcon the icon for the tool
+         * @param theTool the tool
+         */
         ToolBarAction(final String theName, final Icon theIcon, final PaintTool theTool){
             super(theName);
             
@@ -302,7 +300,7 @@ public class PowerPaintGUI extends JFrame {
         }
         
         /**
-         * 
+         * Updates the current tool in myPanel and toggles the selected button.
          */
         @Override
         public void actionPerformed(ActionEvent arg0) {

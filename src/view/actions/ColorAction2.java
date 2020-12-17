@@ -9,20 +9,21 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JColorChooser;
 
-import controller.ColorIcon;
-import model.UWColor;
-//import view.ColorSwatch;
+import view.ColorIcon;
 import view.PaintPanel;
 
+/**
+ * UWT TCSS 305 Section C Programming Practicum - Prof. Tom Capaul
+ * 
+ * This class creates an action that is used to update the secondary color icon in the options menu.
+ * 
+ * @authors Heather Finch (fheather) and Ken Smith (ksmith46)
+ * @version 12/16/2020
+ */
 public class ColorAction2 extends AbstractAction{
 
     /** A generated version ID for serialization. */
     private static final long serialVersionUID = -4521489897253823537L;
-
-    /**
-     * A custom property for propertyChangeListeners to observe.
-     */
-    public static final String COLOR = "color";
     
     /**
      * The paint panel for this application.
@@ -30,16 +31,14 @@ public class ColorAction2 extends AbstractAction{
     private final PaintPanel myPaintPanel;
     
     /**
-     * The color swatch indicating the chosen color.
-     */
-    //private final ColorSwatch myColorSwatch;
-    
-    /**
      * The color chooser this action opens.
      */
     private final JColorChooser myColorChooser;
     
-    ColorIcon secondaryColorIcon;
+    /**
+     * The secondary color icon.
+     */
+    private ColorIcon secondaryColorIcon;
     
     /**
      * Constructs an Action for changing the selected Color.
@@ -50,29 +49,27 @@ public class ColorAction2 extends AbstractAction{
         super("Secondary Color...");
         myPaintPanel = thePanel;
         putValue(MNEMONIC_KEY, KeyEvent.VK_S);
-        //myColorSwatch = new ColorSwatch(myPaintPanel.getSecondaryColor());
         myColorChooser = new JColorChooser(myPaintPanel.getSecondaryColor());
         myColorChooser.setColor(myPaintPanel.getSecondaryColor());
-        secondaryColorIcon = new ColorIcon(myPaintPanel.getSecondaryColor()); //myColorSwatch.getColor());
+        secondaryColorIcon = new ColorIcon(myPaintPanel.getSecondaryColor());
         putValue(Action.SMALL_ICON, secondaryColorIcon);
     }
     
     /**
-     * 
+     * Performs an action to update the secondary color icon and color used by the color panel
+     * via JColorChooser.
      */
     @Override
     public void actionPerformed(final ActionEvent theEvent) {
         
-        // The action when the user clicks OK in the JColorChooser dialog
-        // Created and stored as a Lambda to keep the call to creatDialog clean.
+        // The action when the user clicks OK in the JColorChooser dialog.
         final ActionListener onOkButtonClicked = (theActionEvent) -> {
             final Color newColor = myColorChooser.getColor();
-            //myColorSwatch.setColor(newColor);
             myPaintPanel.setSecondaryColor(newColor);
             secondaryColorIcon.updateColor(newColor);
         };
         
-    // Cancel action is null because we don't need any action to happen on Cancel
+        // Cancel action is null because we don't need any action to happen on Cancel.
         JColorChooser.
             createDialog(null,
                         "Select a color",

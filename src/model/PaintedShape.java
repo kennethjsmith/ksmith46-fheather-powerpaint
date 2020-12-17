@@ -20,6 +20,7 @@ public class PaintedShape implements Serializable {
     /** A generated version ID for serialization. */
     private static final long serialVersionUID = 4352774499551104845L;
     
+    // fields
     private Shape myShape;
     private Color myCurrentColor;
     private int myCurrentWidth;
@@ -38,6 +39,8 @@ public class PaintedShape implements Serializable {
     }
 
     /**
+     * Returns a stroke.
+     * 
      * @return a new instance of a solid BasicStroke with the specified line width and with default values for the cap and join styles.
      */
     public Stroke getStroke() {
@@ -45,6 +48,8 @@ public class PaintedShape implements Serializable {
     }
 
     /**
+     * Returns the color.
+     * 
      * @return myCurrentColor
      */
     public Color getDrawColor() {
@@ -52,6 +57,8 @@ public class PaintedShape implements Serializable {
     }
 
     /**
+     * Returns the shape.
+     * 
      * @return myShape
      */
     public Shape getShape() {
