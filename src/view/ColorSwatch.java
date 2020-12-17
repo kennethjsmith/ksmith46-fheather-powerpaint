@@ -8,6 +8,14 @@ import javax.swing.Icon;
 
 import model.UWColor;
 
+/**
+ * UWT TCSS 305 Section C Programming Practicum - Prof. Tom Capaul
+ * 
+ * This class represents the color swatch object.
+ * 
+ * @authors Heather Finch (fheather) and Ken Smith (ksmith46)
+ * @version 12/16/2020
+ *
 public class ColorSwatch {
     
     private Color myColor;
@@ -24,22 +32,5 @@ public class ColorSwatch {
     public void setColor(Color theColor) {
         myColor = theColor;
     }
-
-//    @Override
-//    public int getIconHeight() {
-//        // TODO Auto-generated method stub
-//        return 0;
-//    }
-//
-//    @Override
-//    public int getIconWidth() {
-//        // TODO Auto-generated method stub
-//        return 0;
-//    }
-//
-//    @Override
-//    public void paintIcon(Component arg0, Graphics arg1, int arg2, int arg3) {
-//        // TODO Auto-generated method stub
-//        
-//    }
-}
+    
+}*/

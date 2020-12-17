@@ -7,9 +7,12 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 
 /**
- * The rectangle tool for the PowerPaint application.
+ * UWT TCSS 305 Section C Programming Practicum - Prof. Tom Capaul
  * 
- * @author 
+ * This class represents the Rectangle Tool object.
+ * 
+ * @authors Heather Finch (fheather) and Ken Smith (ksmith46)
+ * @version 12/16/2020
  */
 public class RectangleTool extends AbstractPaintTool {
 
@@ -38,6 +41,7 @@ public class RectangleTool extends AbstractPaintTool {
     
     /**
      * Constructs this rectangle tool.
+     * Is used as as the super constructor for subclasses.
      * 
      * @param theName the name of this tool
      * @param theMnemonic the mnemonic of this tool
@@ -47,28 +51,50 @@ public class RectangleTool extends AbstractPaintTool {
         myNextPoint = NO_POINT;
     }
     
+    /**
+     *
+     *@return inRectangle a Rectangle2D object
+     */
     @Override
     public Shape getShape() {
-        final Rectangle2D.Double rect = new Rectangle2D.Double();
-        rect.setFrameFromDiagonal(getStartPoint(), myNextPoint);
-        return rect;
+        final Rectangle2D.Double inRectangle = new Rectangle2D.Double();
+        inRectangle.setFrameFromDiagonal(getStartPoint(), getNextPoint());
+        return inRectangle;
     }    
     
+    /**
+     *
+     */
     @Override
     public void setStartPoint(final Point thePoint) {
         super.setStartPoint(thePoint);
-        myNextPoint = thePoint;
+        setNextPoint(thePoint);
     }
     
+    /**
+     *
+     */
     @Override
     public void setNextPoint(Point thePoint) {
         myNextPoint = thePoint;
     }
     
+   /**
+    * This method is especially helpful for 
+    * subclasses needing access to myNextPoint field
+    * 
+    * @return myNextPoint the tools next point.
+    */
+   public Point getNextPoint() {
+       return myNextPoint;
+   }
+    
+    /**
+     *
+     */
     @Override
     public void reset() {
         super.reset();
-        myNextPoint = getStartPoint();
     }
 
 

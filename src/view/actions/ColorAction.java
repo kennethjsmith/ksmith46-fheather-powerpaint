@@ -11,7 +11,7 @@ import javax.swing.JColorChooser;
 
 import controller.ColorIcon;
 import model.UWColor;
-import view.ColorSwatch;
+//import view.ColorSwatch;
 import view.PaintPanel;
 
 public class ColorAction extends AbstractAction{
@@ -32,7 +32,7 @@ public class ColorAction extends AbstractAction{
     /**
      * The color swatch indicating the chosen color.
      */
-    private final ColorSwatch myColorSwatch;
+    //private final ColorSwatch myColorSwatch;
     
     /**
      * The color chooser this action opens.
@@ -50,21 +50,22 @@ public class ColorAction extends AbstractAction{
         super("Primary Color...");
         myPaintPanel = thePanel;
         putValue(MNEMONIC_KEY, KeyEvent.VK_P);
-        myColorSwatch = new ColorSwatch(myPaintPanel.getPrimaryColor());
-        //putValue(SMALL_ICON, myColorSwatch);
+        //myColorSwatch = new ColorSwatch(myPaintPanel.getPrimaryColor());
         myColorChooser = new JColorChooser(myPaintPanel.getPrimaryColor());
         myColorChooser.setColor(myPaintPanel.getPrimaryColor());    
-        primaryColorIcon = new ColorIcon(UWColor.getPurple());
+        primaryColorIcon = new ColorIcon(myPaintPanel.getPrimaryColor()); //myColorSwatch.getColor());
         putValue(Action.SMALL_ICON, primaryColorIcon);
-        
     }
     
+    /**
+     * 
+     */
     @Override
     public void actionPerformed(final ActionEvent theEvent) {
       
         final ActionListener onOkButtonClicked = (theActionEvent) -> {
             final Color newColor = myColorChooser.getColor();
-            myColorSwatch.setColor(newColor);
+            //myColorSwatch.setColor(newColor);
             myPaintPanel.setPrimaryColor(newColor);
             primaryColorIcon.updateColor(newColor);
         };

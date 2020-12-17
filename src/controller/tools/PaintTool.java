@@ -51,4 +51,5 @@ public interface PaintTool {
      * Resets the tool using default values.
      */
     void reset();
+
 }

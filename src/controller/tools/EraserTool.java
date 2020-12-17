@@ -5,7 +5,15 @@ import java.awt.Shape;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Path2D;
 
-public class EraserTool extends AbstractPaintTool {
+/**
+ * UWT TCSS 305 Section C Programming Practicum - Prof. Tom Capaul
+ * 
+ * This class represents the Eraser Tool object, which is a pencil with a different name and mnemonic.
+ * 
+ * @authors Heather Finch (fheather) and Ken Smith (ksmith46)
+ * @version 12/16/2020
+ */
+public class EraserTool extends PencilTool {
 
     /**
      * The name of the tool.
@@ -18,35 +26,9 @@ public class EraserTool extends AbstractPaintTool {
     private static final int MY_MNEMONIC = KeyEvent.VK_A;
     
     /**
-     * Stores the points in this shape.
+     *
      */
-    private Path2D.Double myPath;
-    
     public EraserTool() {
         super(MY_NAME, MY_MNEMONIC);
-        myPath = new Path2D.Double();
     }
-
-    @Override
-    public void setStartPoint(final Point thePoint) {
-        super.setStartPoint(thePoint);
-        myPath.moveTo(thePoint.getX(), thePoint.getY());
-    }
-    
-    @Override
-    public Shape getShape() {
-        return myPath;
-    }
-    
-    @Override
-    public void reset() {
-        super.reset();
-        myPath = new Path2D.Double();
-    }
-
-    @Override
-    public void setNextPoint(final Point thePoint) {
-        myPath.lineTo(thePoint.getX(), thePoint.getY());
-    }
-
 }

@@ -11,23 +11,18 @@ import javax.swing.JColorChooser;
 
 import controller.ColorIcon;
 import model.UWColor;
-import view.ColorSwatch;
+//import view.ColorSwatch;
 import view.PaintPanel;
 
 public class ColorAction2 extends AbstractAction{
 
-    /**
-     * 
-     */
+    /** A generated version ID for serialization. */
     private static final long serialVersionUID = -4521489897253823537L;
 
     /**
      * A custom property for propertyChangeListeners to observe.
      */
     public static final String COLOR = "color";
-    
-    /** A generated version ID for serialization. */
-    //add later?
     
     /**
      * The paint panel for this application.
@@ -37,7 +32,7 @@ public class ColorAction2 extends AbstractAction{
     /**
      * The color swatch indicating the chosen color.
      */
-    private final ColorSwatch myColorSwatch;
+    //private final ColorSwatch myColorSwatch;
     
     /**
      * The color chooser this action opens.
@@ -55,14 +50,16 @@ public class ColorAction2 extends AbstractAction{
         super("Secondary Color...");
         myPaintPanel = thePanel;
         putValue(MNEMONIC_KEY, KeyEvent.VK_S);
-        myColorSwatch = new ColorSwatch(myPaintPanel.getSecondaryColor());
-        //putValue(SMALL_ICON, myColorSwatch);
+        //myColorSwatch = new ColorSwatch(myPaintPanel.getSecondaryColor());
         myColorChooser = new JColorChooser(myPaintPanel.getSecondaryColor());
         myColorChooser.setColor(myPaintPanel.getSecondaryColor());
-        secondaryColorIcon = new ColorIcon(UWColor.getGold());
+        secondaryColorIcon = new ColorIcon(myPaintPanel.getSecondaryColor()); //myColorSwatch.getColor());
         putValue(Action.SMALL_ICON, secondaryColorIcon);
     }
     
+    /**
+     * 
+     */
     @Override
     public void actionPerformed(final ActionEvent theEvent) {
         
@@ -70,7 +67,7 @@ public class ColorAction2 extends AbstractAction{
         // Created and stored as a Lambda to keep the call to creatDialog clean.
         final ActionListener onOkButtonClicked = (theActionEvent) -> {
             final Color newColor = myColorChooser.getColor();
-            myColorSwatch.setColor(newColor);
+            //myColorSwatch.setColor(newColor);
             myPaintPanel.setSecondaryColor(newColor);
             secondaryColorIcon.updateColor(newColor);
         };

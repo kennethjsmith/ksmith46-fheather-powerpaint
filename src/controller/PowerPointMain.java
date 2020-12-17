@@ -5,6 +5,14 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import view.PowerPaintGUI;
 
+/**
+ * UWT TCSS 305 Section C Programming Practicum - Prof. Tom Capaul
+ * 
+ * This class contains the main method that runs the Power Paint program.
+ * 
+ * @authors Heather Finch (fheather) and Ken Smith (ksmith46)
+ * @version 12/16/2020
+ */
 final public class PowerPointMain {
     
     /**private constructor to inhibit instantiation. */
@@ -14,12 +22,12 @@ final public class PowerPointMain {
     }
     
     /**
-     * Set the look and feel for the GUI program.
+     * Set the look and feel for the GUI program. Catches multiple types of exceptions.
      */
     private static void setLookAndFeel() {
         try {
             UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-            /* Turn off metal's use of bold fonts. */
+            // Turn off metal's use of bold fonts. 
             UIManager.put("swing.boldMetal", Boolean.FALSE);
             
         } catch (final UnsupportedLookAndFeelException ex) {
@@ -34,11 +42,12 @@ final public class PowerPointMain {
     }
     
     /**
-     * Creates and display PowerPaint.
+     * Calls invokeLater with a anonymous implementer of Runnable parameter. 
+     * This inner class has a run method which creates and displays PowerPaintGUI object.
      * 
-     * @param theArgs Command line arguments (ignored).
+     * @param args command line arguments (ignored)
      */
-    public static void main(final String... theArgs) {
+    public static void main(final String[] args) {
         
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {

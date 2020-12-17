@@ -2,6 +2,14 @@ package controller.tools;
 
 import java.awt.Point;
 
+/**
+ * UWT TCSS 305 Section C Programming Practicum - Prof. Tom Capaul
+ * 
+ * This class represents an abstract paint tool, it implements PaintTool and has generic methods used by subclasses.
+ * 
+ * @authors Heather Finch (fheather) and Ken Smith (ksmith46)
+ * @version 12/16/2020
+ */
 public abstract class AbstractPaintTool implements PaintTool {
     
     
@@ -37,26 +45,41 @@ public abstract class AbstractPaintTool implements PaintTool {
         myStartPoint = NO_POINT;
     }
     
+    /**
+     *
+     */
     @Override
     public String getName() {
         return myName;
     }
     
+    /**
+     *
+     */
     @Override
     public int getMnemonic() {
         return myMnemonic;
     }
     
+    /**
+     *
+     */
     @Override
     public void setStartPoint(final Point thePoint) {
         myStartPoint = thePoint;
     }
     
+    /**
+     *
+     */
     @Override
     public Point getStartPoint() {
         return myStartPoint;
     }
     
+    /**
+     * Resets the tools start point.
+     */
     @Override
     public void reset() {
         setStartPoint(NO_POINT);

@@ -6,7 +6,15 @@ import java.awt.event.KeyEvent;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
-public class EllipseTool extends AbstractPaintTool implements PaintTool {
+/**
+ * UWT TCSS 305 Section C Programming Practicum - Prof. Tom Capaul
+ * 
+ * This class represents the Ellipse Tool object, which is a rectangle with different getShape method.
+ * 
+ * @authors Heather Finch (fheather) and Ken Smith (ksmith46)
+ * @version 12/16/2020
+ */
+public class EllipseTool extends RectangleTool {
 
     /**
      * The name of the tool.
@@ -18,54 +26,22 @@ public class EllipseTool extends AbstractPaintTool implements PaintTool {
      */
     private static final int MY_MNEMONIC = KeyEvent.VK_E;
     
-    /**
-     * The end point.
-     */
-    private Point myNextPoint;
     
     /**
      * Constructs this rectangle tool.
      */
     public EllipseTool() {
         super(MY_NAME, MY_MNEMONIC);
-        myNextPoint = NO_POINT;
     }
     
     /**
-     * Constructs this ellipse tool.
-     * 
-     * @param theName the name of this tool
-     * @param theMnemonic the mnemonic of this tool
+     * @return ellipse an Ellipse2D object
      */
-    public EllipseTool(final String theName, final int theMnemonic) {
-        super(theName, theMnemonic);
-        myNextPoint = NO_POINT;
-    }
-    
     @Override
     public Shape getShape() {
-        final Ellipse2D.Double rect = new Ellipse2D.Double();
-        rect.setFrameFromDiagonal(getStartPoint(), myNextPoint);
-        return rect;
-    }    
-    
-    @Override
-    public void setStartPoint(final Point thePoint) {
-        super.setStartPoint(thePoint);
-        myNextPoint = thePoint;
-    }
-    
-    @Override
-    public void setNextPoint(Point thePoint) {
-        myNextPoint = thePoint;
-    }
-    
-    @Override
-    public void reset() {
-        super.reset();
-        myNextPoint = getStartPoint();
-    }
-
-
+        final Ellipse2D.Double inEllipse = new Ellipse2D.Double();
+        inEllipse.setFrameFromDiagonal(getStartPoint(), getNextPoint());
+        return inEllipse;
+    }        
 
 }

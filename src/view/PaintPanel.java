@@ -31,6 +31,19 @@ import controller.tools.AbstractPaintTool;
 import controller.tools.EraserTool;
 import controller.tools.PaintTool;
 
+
+/**
+ * UWT TCSS 305 Section C Programming Practicum - Prof. Tom Capaul
+ * 
+ * This class represents the panel where the user draws shapes. 
+ * It keeps track of all the shapes in a LinkedList and has a second LinkedList for tracking undo/redo.
+ * 
+ * This class also tracks the current width, tool and color. 
+ * It holds the save feature and load, as well as an inner class used to track the mouse.
+ * 
+ * @authors Heather Finch (fheather) and Ken Smith (ksmith46)
+ * @version 12/16/2020
+ */
 public class PaintPanel extends JPanel{
     /**
      * The panel width.
@@ -74,6 +87,7 @@ public class PaintPanel extends JPanel{
 
     private Color mySecondaryColor;
     
+    // an int for tracking the current mouse button in order to prevent multi-mouseclick bugs
     private int myCurrentMouseButton;
 
     /**
@@ -89,16 +103,19 @@ public class PaintPanel extends JPanel{
         addMouseMotionListener(mouseHandler);
         myCurrentWidth = LINE_WIDTH;
         myCurrentTool = theTool;
-        myCurrentColor = myPrimaryColor;
         myShapeList = new LinkedList<>();
         myRedoList = new LinkedList<>();
         myPrimaryColor = UWColor.getPurple();
         mySecondaryColor = UWColor.getGold();
+        myCurrentColor = myPrimaryColor;
         
         myCurrentMouseButton = 0; 
         
     }
 
+    /**
+     *
+     */
     @Override
     public void paintComponent(final Graphics theGraphics) {
         super.paintComponent(theGraphics);
@@ -211,6 +228,9 @@ public class PaintPanel extends JPanel{
         myCurrentWidth = theWidth;
     }
     
+    /**
+     *
+     */
     public void undoLastDrawing() {
         if(myShapeList.size() > 0) {
             myRedoList.push(myShapeList.get(0));
@@ -219,6 +239,9 @@ public class PaintPanel extends JPanel{
         }
     }
     
+    /**
+     *
+     */
     public void redoLastUno() {
         if(myRedoList.size() > 0) {
             myShapeList.push(myRedoList.get(0));
@@ -227,6 +250,9 @@ public class PaintPanel extends JPanel{
         }
     }
     
+    /**
+     *
+     */
     public void save() {
         JFileChooser fileChooser = new JFileChooser();
         
@@ -254,6 +280,9 @@ public class PaintPanel extends JPanel{
         }
     }
     
+    /**
+     *
+     */
     public void load() {
         myShapeList.clear();
         JFileChooser fileChooser = new JFileChooser();
@@ -291,12 +320,22 @@ public class PaintPanel extends JPanel{
     
     // Inner Class
     /**
-     *  Listens for mouse events to draw on our panel.
-     * @author 12538 
-     *
+     *  This mouse handler extends MouseInputAdapter which implements MouseInputListener,
+     *  an interface that implements both the MouseListener and MouseMotionListener interfaces.
+     *  
+     *  It generates sets start and next points for the current tool, 
+     *  then resets these values and adds the shape to the list on release.
+     *  
+     *  Its very similar to a class shared in lecture, with some modification to prevent the multiple mouse button clicks
+     *  from having an effect at the same time. Mouse dragged doesn't work when the current tools start point is set to the default.
+     *  
+     * @authors Ken Smith (ksmith46) and Heather Finch (fheather)
      */
     private class MyMouseHandler extends MouseInputAdapter {
 
+       /**
+        *
+        */
         @Override
         public void mousePressed(final MouseEvent theEvent) {
             if (myCurrentWidth > 0 && myCurrentMouseButton == 0) {
@@ -315,7 +354,9 @@ public class PaintPanel extends JPanel{
             }
         }
         
-    
+       /**
+        *
+        */
         @Override
         public void mouseDragged(final MouseEvent theEvent) {
             if (myCurrentWidth > 0 && myCurrentTool.getStartPoint() != AbstractPaintTool.NO_POINT) {
@@ -324,13 +365,15 @@ public class PaintPanel extends JPanel{
             }
         }
     
+       /**
+        *
+        */
         @Override
         public void mouseReleased(final MouseEvent theEvent) {            
             
             if (myCurrentWidth > 0 && theEvent.getButton() == myCurrentMouseButton) {
                 myCurrentTool.setNextPoint(theEvent.getPoint());
                 myShapeList.push(new PaintedShape(myCurrentTool.getShape(),
-                                                  myCurrentColor,
                                                   myCurrentColor,
                                                   myCurrentWidth));
                 myRedoList.clear();

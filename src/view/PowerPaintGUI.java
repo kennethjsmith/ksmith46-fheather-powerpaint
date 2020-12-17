@@ -43,6 +43,15 @@ import view.actions.ColorAction;
 import view.actions.ColorAction2;
 
 
+
+/**
+ * UWT TCSS 305 Section C Programming Practicum - Prof. Tom Capaul
+ * 
+ * This class contains the main method that runs the Power Paint program.
+ * 
+ * @authors Heather Finch (fheather) and Ken Smith (ksmith46)
+ * @version 12/16/2020
+ */
 public class PowerPaintGUI extends JFrame {
 
     /** A generated serialization ID. */
@@ -254,7 +263,11 @@ public class PowerPaintGUI extends JFrame {
                    + "TCSS 305 Assignment 4", "About", JOptionPane.INFORMATION_MESSAGE, (Icon)myPaintIcon);           
         });         
     }
-    
+    /**
+     *  
+     *  
+     * @authors Ken Smith (ksmith46) and Heather Finch (fheather)
+     */
     private class ToolBarAction extends AbstractAction {
         
         /** A generated serialization ID. */
@@ -288,6 +301,9 @@ public class PowerPaintGUI extends JFrame {
             putValue(Action.SELECTED_KEY, true);
         }
         
+        /**
+         * 
+         */
         @Override
         public void actionPerformed(ActionEvent arg0) {
             myPanel.setCurrentTool(myTool);
