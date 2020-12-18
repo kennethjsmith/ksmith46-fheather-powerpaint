@@ -34,7 +34,7 @@ public class ColorIcon implements Icon {
     /**
      * Updates the color.
      * 
-     * @param theNewColor
+     * @param theNewColor the new color of the icon
      */
     public void updateColor(Color theNewColor){
         myIconColor = theNewColor;
@@ -43,7 +43,7 @@ public class ColorIcon implements Icon {
     /**
      * Returns the height.
      * 
-     * @return HEIGHT
+     * @return HEIGHT the height of the icon
      */
     @Override
     public int getIconHeight() {
@@ -53,7 +53,7 @@ public class ColorIcon implements Icon {
     /**
      * Returns the width.
      * 
-     * @return WIDTH
+     * @return WIDTH the width of the icon
      */
     @Override
     public int getIconWidth() {

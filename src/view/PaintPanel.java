@@ -68,34 +68,48 @@ public class PaintPanel extends JPanel{
         
     // fields
     
+    /** The width of the line used by the tool */
     private int myCurrentWidth;
 
+    /** The tool currently being used */
     private PaintTool myCurrentTool;
 
+    /** The color currently being used. */
     private Color myCurrentColor;
 
+    /** A list of all PaintedShapes drawn on the panel. */
     private LinkedList<PaintedShape> myShapeList;
     
+    /** 
+     * A list of PaintedShapes that have been undone. 
+     * This list is emptied everytime something is drawn
+     */
     private LinkedList<PaintedShape> myRedoList;
     
+    /** The current primary color */
     private Color myPrimaryColor;
 
+    /** The current secondary color. */
     private Color mySecondaryColor;
     
     // Used for tracking the current mouse button in order to prevent multi-mouseclick bugs.
+    /** The mouse button that was clicked. */
     private int myCurrentMouseButton;
 
     /**
      * Constructs a new PaintPanel.
      */
     public PaintPanel(PaintTool theTool) {
-        super();       
+        super(); 
+        
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
         setBackground(BACKGROUND_COLOR);
-        final MyMouseHandler mouseHandler = new MyMouseHandler();
+        
+        final MyMouseHandler mouseHandler = new MyMouseHandler();       
         addMouseListener(mouseHandler);
         addMouseMotionListener(mouseHandler);
+        
         myCurrentWidth = LINE_WIDTH;
         myCurrentTool = theTool;
         myShapeList = new LinkedList<>();
@@ -103,9 +117,7 @@ public class PaintPanel extends JPanel{
         myPrimaryColor = UWColor.getPurple();
         mySecondaryColor = UWColor.getGold();
         myCurrentColor = myPrimaryColor;
-        
-        myCurrentMouseButton = 0; 
-        
+        myCurrentMouseButton = 0;     
     }
 
     /**
@@ -120,16 +132,16 @@ public class PaintPanel extends JPanel{
                              RenderingHints.VALUE_ANTIALIAS_ON);
         
         final Iterator<PaintedShape> it = myShapeList.descendingIterator();
+        // Goes through the shape list and draws all shapes in reverse order.
         while (it.hasNext()) {
             final PaintedShape current = it.next();
             g2d.setStroke(current.getStroke());
             g2d.setPaint(current.getDrawColor());
-            final Shape s = current.getShape();
-            
+            final Shape s = current.getShape();            
             g2d.draw(s);
         }
     
-        // draw the current shape
+        // Draws the current shape.
         g2d.setStroke(new BasicStroke(myCurrentWidth,
                         BasicStroke.CAP_SQUARE,
                         BasicStroke.JOIN_MITER,
@@ -144,13 +156,15 @@ public class PaintPanel extends JPanel{
     
     /**
      * Clears the painting surface.
+     * NOTE: Undo/redo currently does not work for clear, ie: if the screen is cleared then it is permament. 
      */
-    public void clear() {
-        
+    public void clear() {        
         myShapeList.clear();
         firePropertyChange("clear", null, false);
         repaint();
         PowerPaintGUI.setClearButton(false);
+        PowerPaintGUI.setUndoButton(false);
+        PowerPaintGUI.setRedoButton(false);
     }
     
     /**
@@ -227,10 +241,12 @@ public class PaintPanel extends JPanel{
     /**
      * Removes the last shape from the shape list and adds it to the redo list before repainting.
      */
-    public void undoLastDrawing() {
+    public void undoLastDrawing() {      
         if(myShapeList.size() > 0) {
             myRedoList.push(myShapeList.get(0));
             myShapeList.remove(0);
+            PowerPaintGUI.setRedoButton(true);
+            if(myShapeList.size() == 0) PowerPaintGUI.setUndoButton(false);
             repaint();
         }
     }
@@ -373,6 +389,8 @@ public class PaintPanel extends JPanel{
                                                   myCurrentWidth));
                 myRedoList.clear();
                 PowerPaintGUI.setClearButton(true);
+                PowerPaintGUI.setUndoButton(true);
+                PowerPaintGUI.setRedoButton(false);
                 firePropertyChange("clear", null, true);
                 // reset is important for preventing multi-click events, dragging with the non-current mouse button
                 myCurrentTool.reset();

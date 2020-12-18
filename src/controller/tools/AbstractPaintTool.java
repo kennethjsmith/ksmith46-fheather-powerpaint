@@ -13,24 +13,16 @@ import java.awt.Point;
 public abstract class AbstractPaintTool implements PaintTool {
     
     
-    /**
-     * A point outside the drawing area.
-     */
+    /** A point outside the drawing area. */
     public static final Point NO_POINT = new Point (-50, -50);
         
-    /**
-     * The name of this tool.
-     */
+    /** The name of this tool. */
     private final String myName;
     
-    /**
-     * The mnemonic for this tool.
-     */
+    /** The mnemonic for this tool. */
     private final int myMnemonic;
     
-    /**
-     * The initial anchor point for the current shape drawn by this tool.
-     */
+    /** The initial anchor point for the current shape drawn by this tool. */
     private Point myStartPoint;
     
     /**
@@ -46,6 +38,8 @@ public abstract class AbstractPaintTool implements PaintTool {
     }
     
     /**
+     * Returns the name of the tool.
+     * 
      * @return myName the name of the tool
      */
     @Override
@@ -54,6 +48,8 @@ public abstract class AbstractPaintTool implements PaintTool {
     }
     
     /**
+     * Returns the mnemonic for the tool.
+     * 
      * @return myMnemonic the mnemonic for the tool
      */
     @Override
@@ -63,6 +59,8 @@ public abstract class AbstractPaintTool implements PaintTool {
     
     /**
      * Sets the start point.
+     * 
+     * @param thePoint the point for the new start point.
      */
     @Override
     public void setStartPoint(final Point thePoint) {
@@ -70,7 +68,9 @@ public abstract class AbstractPaintTool implements PaintTool {
     }
     
     /**
-     * @return myStartPoint
+     * Returns the start point.
+     * 
+     * @return myStartPoint the start point
      */
     @Override
     public Point getStartPoint() {

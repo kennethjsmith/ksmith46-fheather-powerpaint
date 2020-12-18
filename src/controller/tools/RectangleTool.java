@@ -16,19 +16,13 @@ import java.awt.geom.Rectangle2D;
  */
 public class RectangleTool extends AbstractPaintTool {
 
-    /**
-     * The name of the tool.
-     */
+    /** The name of the tool. */
     private static final String MY_NAME = "Rectangle";
     
-    /**
-     * The mnemonic of the tool.
-     */
+    /** The mnemonic of the tool. */
     private static final int MY_MNEMONIC = KeyEvent.VK_R;
     
-    /**
-     * The end point.
-     */
+    /** The end point. */
     private Point myNextPoint;
     
     /**

@@ -11,6 +11,7 @@ import java.awt.Color;
  * @version 12/16/2020
  */
 public final class UWColor {
+    
     /** The hex RGB value for UW Purple. */
     private static final String UW_PURPLE = "#4b2e83";
     
@@ -25,7 +26,8 @@ public final class UWColor {
     
     /**
      * Returns a default purple color.
-     * @return Color.decode(UW_PURPLE)
+     * 
+     * @return Color.decode(UW_PURPLE) the color for UW purple
      */
     public static Color getPurple() {
         return Color.decode(UW_PURPLE);
@@ -33,7 +35,8 @@ public final class UWColor {
     
     /**
      * Returns a default gold color.
-     * @return Color.decode(UW_GOLD)
+     * 
+     * @return Color.decode(UW_GOLD) the color for UW gold
      */
     public static Color getGold() {
         return Color.decode(UW_GOLD);

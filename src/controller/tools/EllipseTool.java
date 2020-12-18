@@ -16,20 +16,14 @@ import java.awt.geom.Rectangle2D;
  */
 public class EllipseTool extends RectangleTool {
 
-    /**
-     * The name of the tool.
-     */
+    /** The name of the tool. */
     private static final String MY_NAME = "Ellipse";
     
-    /**
-     * The mnemonic of the tool.
-     */
+    /** The mnemonic of the tool. */
     private static final int MY_MNEMONIC = KeyEvent.VK_E;
     
     
-    /**
-     * Constructs this rectangle tool.
-     */
+    /** Constructs this rectangle tool. */
     public EllipseTool() {
         super(MY_NAME, MY_MNEMONIC);
     }

@@ -15,19 +15,13 @@ import java.awt.geom.Line2D;
  */
 public class LineTool extends AbstractPaintTool {
 
-    /**
-     * The name of the tool.
-     */
+    /** The name of the tool. */
     private static final String MY_NAME = "Line";
     
-    /**
-     * The mnemonic of the tool.
-     */
+    /** The mnemonic of the tool. */
     private static final int MY_MNEMONIC = KeyEvent.VK_L;
     
-    /**
-     * The end point for the current line.
-     */
+    /** The end point for the current line. */
     private Point myNextPoint;
     
     /**
@@ -60,11 +54,11 @@ public class LineTool extends AbstractPaintTool {
     
     /**
      * Sets the next point.
+     * 
      * @param thePoint the new next point
      */
     @Override
     public void setNextPoint(Point thePoint) {
         myNextPoint = thePoint;
-    }
-    
+    }    
 }

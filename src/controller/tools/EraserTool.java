@@ -15,14 +15,10 @@ import java.awt.geom.Path2D;
  */
 public class EraserTool extends PencilTool {
 
-    /**
-     * The name of the tool.
-     */
+    /** The name of the tool. */
     private static final String MY_NAME = "Eraser";
     
-    /**
-     * The mnemonic of the tool.
-     */
+    /** The mnemonic of the tool. */
     private static final int MY_MNEMONIC = KeyEvent.VK_A;
     
     /**

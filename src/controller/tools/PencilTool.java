@@ -15,19 +15,13 @@ import java.awt.geom.Path2D;
  */
 public class PencilTool extends AbstractPaintTool {
 
-    /**
-     * The name of the tool.
-     */
+    /** The name of the tool. */
     private static final String MY_NAME = "Pencil";
     
-    /**
-     * The mnemonic of the tool.
-     */
+    /** The mnemonic of the tool. */
     private static final int MY_MNEMONIC = KeyEvent.VK_P;
     
-    /**
-     * Stores the points in this shape.
-     */
+    /** Stores the points in this shape. */
     private Path2D.Double myPath;
     
     /**
@@ -40,6 +34,9 @@ public class PencilTool extends AbstractPaintTool {
     
     /**
      * Constructs this pencil tool.
+     * 
+     * @param theName the name of this tool
+     * @param theMnemonic the mnemonic for this tool
      */
     public PencilTool(String theName, int theMnemonic) {
         super(theName, theMnemonic);
@@ -58,6 +55,7 @@ public class PencilTool extends AbstractPaintTool {
     
     /**
      * Gets the shape.
+     * 
      * @return myPath the current path
      */
     @Override
